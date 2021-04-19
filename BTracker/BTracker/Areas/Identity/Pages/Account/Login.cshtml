@@ -1,0 +1,66 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <section>
+                <form class="login100-form validate-form" id="account" method="post">
+                    <span class="login100-form-title p-b-26">
+                        Welcome to <b style="color: #150940">BTracker</b>
+                    </span>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" asp-for="Input.Email" placeholder="Email" type="text">
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+                        <input class="input100" type="password" asp-for="Input.Password" placeholder="Password">
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <button class="login100-form-btn submitFormBtn" type="submit">
+                                Log in
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center p-t-115">
+                        <span class="txt1">
+                            Forgot your 
+                        </span>
+
+                        <b>@Html.ActionLink("Password?", "Account", "Identity", new { id = "ForgotPassword" }) </b>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="txt1">
+                            New user? 
+                        </span>
+
+                        <b>@Html.ActionLink("Register here", "Account", "Identity", new { id = "Register" })</b>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="txt1">
+                            Enter as a
+                        </span>
+
+                        <b>@Html.ActionLink("Demo User", "Demo", "Demo")</b>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

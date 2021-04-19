@@ -1,0 +1,10 @@
+﻿.submitFormBtn {
+    background: #150940;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 24px 0 12px;
+    padding: 16px;
+    border: 0;
+    color: white;
+    cursor: pointer;
+}

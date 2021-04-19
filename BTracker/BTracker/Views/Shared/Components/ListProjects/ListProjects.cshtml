@@ -1,0 +1,6 @@
+﻿@model IList<BTracker.Models.Project>
+
+@foreach (var project in Model)
+{ 
+    <a class="p-r-20" asp-action="Details" asp-controller="Projects" asp-route-id="@project.ProjectId">@project.ProjectName</a>
+}

@@ -1,0 +1,29 @@
+﻿@using BTracker.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext context
+@inject UserManager<IdentityUser> userManager
+@inject SignInManager<IdentityUser> signInManager
+
+@{
+    var currentUserId = userManager.GetUserId(User);
+
+    // Gets all the projects ids that I have access from ProjectAccesses
+    List<int> projectsThatIHaveAccess = (from pA in context.ProjectAccesses
+                                         where pA.UserId == currentUserId
+                                         select pA.ProjectId).ToList();
+
+    // With the id of the projects that I have access, use the id and show the project with that id
+    var getTheProjects = (from getP in context.Projects
+                          where projectsThatIHaveAccess.Contains(getP.ProjectId)
+                          select getP).Include(x => x.User);
+}
+
+@Html.ActionLink("Add Project", "Create", "Projects", null) |
+@if (signInManager.IsSignedIn(User))
+{
+    @foreach(var project in getTheProjects)
+    {
+        <a asp-action="Details" asp-controller="Projects" asp-route-id="@project.ProjectId">@Html.DisplayFor(modelProject => project.ProjectName) | </a>
+    }
+}

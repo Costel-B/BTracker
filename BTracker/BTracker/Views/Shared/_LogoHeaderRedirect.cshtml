@@ -1,0 +1,8 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
+
+@if (signInManager.IsSignedIn(User))
+{
+    <a asp-area="" asp-action="Index" asp-controller="Projects"><img src="~/LogoHeader.svg" /></a>
+}

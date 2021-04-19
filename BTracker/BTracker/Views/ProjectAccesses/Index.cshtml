@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BTracker.Models.ProjectAccess>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "ProjectAccesses", new { id = ViewBag.currentProjectId })
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccessLevel)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccessLevel.AccessName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProjectAccessId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProjectAccessId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProjectAccessId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
