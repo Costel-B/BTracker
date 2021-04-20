@@ -9,6 +9,7 @@ using BTracker.Data;
 using BTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using BTracker.Models.Views;
 
 namespace BTracker.Controllers
 {
@@ -25,18 +26,25 @@ namespace BTracker.Controllers
         }
 
         // GET: ProjectAccesses
-        [Authorize(Policy = "AdminAccess")]
         public async Task<IActionResult> Index(int? id)
         {
+            var project = _context.Projects.FirstOrDefault(x => x.ProjectId == id);
+            var projectAccesses = await _context.ProjectAccesses.Where(x => x.ProjectId == id).Include(p => p.AccessLevel).Include(p => p.User).ToListAsync();
+
+            var projectAccess = new ProjectSectionAndTaskesViewModel()
+            {
+                Project = project,
+                ProjectAccesses = projectAccesses
+            };
+
             ViewBag.currentProjectId = id;
-            var applicationDbContext = _context.ProjectAccesses.Where(x => x.ProjectId == id).Include(p => p.AccessLevel).Include(p => p.User);
-            return View(await applicationDbContext.ToListAsync());
+            return View(projectAccess);
         }
 
         // GET: ProjectAccesses/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? projectAccessId)
         {
-            if (id == null)
+            if (projectAccessId == null)
             {
                 return NotFound();
             }
@@ -44,7 +52,7 @@ namespace BTracker.Controllers
             var projectAccess = await _context.ProjectAccesses
                 .Include(p => p.AccessLevel)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectAccessId == id);
+                .FirstOrDefaultAsync(m => m.ProjectAccessId == projectAccessId);
             if (projectAccess == null)
             {
                 return NotFound();
@@ -85,14 +93,14 @@ namespace BTracker.Controllers
 
         // GET: ProjectAccesses/Edit/5
         [Authorize(Policy = "AdminAccess")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? projectAccessId)
         {
-            if (id == null)
+            if (id == null && projectAccessId == null)
             {
                 return NotFound();
             }
 
-            var projectAccess = await _context.ProjectAccesses.FindAsync(id);
+            var projectAccess = await _context.ProjectAccesses.FindAsync(projectAccessId);
             if (projectAccess == null)
             {
                 return NotFound();
@@ -107,9 +115,9 @@ namespace BTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectAccessId,UserId,ProjectId,AccessLevelId")] ProjectAccess projectAccess)
+        public async Task<IActionResult> Edit(int id, int projectAccessId, [Bind("ProjectAccessId,UserId,ProjectId,AccessLevelId")] ProjectAccess projectAccess)
         {
-            if (id != projectAccess.ProjectAccessId)
+            if (projectAccessId != projectAccess.ProjectAccessId)
             {
                 return NotFound();
             }
@@ -141,9 +149,9 @@ namespace BTracker.Controllers
 
         // GET: ProjectAccesses/Delete/5
         [Authorize (Policy = "AdminAccess")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? projectAccessId)
         {
-            if (id == null)
+            if (projectAccessId == null)
             {
                 return NotFound();
             }
@@ -151,7 +159,7 @@ namespace BTracker.Controllers
             var projectAccess = await _context.ProjectAccesses
                 .Include(p => p.AccessLevel)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectAccessId == id);
+                .FirstOrDefaultAsync(m => m.ProjectAccessId == projectAccessId);
             if (projectAccess == null)
             {
                 return NotFound();
@@ -163,9 +171,9 @@ namespace BTracker.Controllers
         // POST: ProjectAccesses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int projectAccessId)
         {
-            var projectAccess = await _context.ProjectAccesses.FindAsync(id);
+            var projectAccess = await _context.ProjectAccesses.FindAsync(projectAccessId);
             _context.ProjectAccesses.Remove(projectAccess);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

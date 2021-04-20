@@ -54,7 +54,7 @@ namespace BTracker.Controllers
         }
 
         // GET: Taskes/Create
-        [Authorize (Policy = "AdminAccess, UserAccess")]
+        [Authorize (Policy = "AdminAccess")]
         public IActionResult Create(int? id, int? sectionId)
         {
             ViewData["SectionId"] = new SelectList(_context.Sections.Where(x => x.SectionId == sectionId), "SectionId", "SectionName");
@@ -85,7 +85,7 @@ namespace BTracker.Controllers
         }
 
         // GET: Taskes/Edit/5
-        [Authorize(Policy = "AdminAccess, UserAccess")]
+        [Authorize(Policy = "AdminAccess")]
         public async Task<IActionResult> Edit(int? id, int? sectionId, int? taskeId)
         {
             if (id == null && sectionId == null && taskeId == null)

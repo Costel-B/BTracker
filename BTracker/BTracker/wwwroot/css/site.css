@@ -1,4 +1,6 @@
-﻿.submitFormBtn {
+﻿@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+
+.submitFormBtn {
     background: #150940;
     border-radius: 5px;
     font-size: 16px;
@@ -7,4 +9,13 @@
     border: 0;
     color: white;
     cursor: pointer;
+}
+
+.myProjectsContainer {
+    width: 100%;
+    height: auto;
+}
+.myProjectsContainer a
+{
+    padding: 10px 20px;
 }

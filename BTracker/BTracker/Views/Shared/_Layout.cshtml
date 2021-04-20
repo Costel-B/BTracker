@@ -21,7 +21,7 @@
 
 </head>
 
-<body>
+<body style="height: 100vh; background-color: #F0EFF3">
 @if (ViewData["Title"].ToString() == "Log in")
 {
 
@@ -44,7 +44,7 @@ else if (ViewData["Title"].ToString() == "Confirm email")
 }
 else
 {
-    <header style="background-color: #fff">
+    <header style="background-color: white">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom">
             <div class="container col-lg">
                 <partial name="_LogoHeaderRedirect" />
@@ -58,10 +58,9 @@ else
                 </div>
             </div>
         </nav>
-@*        <partial name="_MyProjectsList" />
-*@    </header>
+    </header>
 }
-    <div class="container">
+    <div>
         <main role="main">
             @RenderBody()
         </main>

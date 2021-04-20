@@ -506,3 +506,5 @@ C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\NWebsec.AspNetCore.M
 C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\NWebsec.AspNetCore.Mvc.TagHelpers.dll
 C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\WebEssentials.AspNetCore.Pwa.dll
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Shared\Components\ListProjects\ListProjects.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\_SeeUsersInProject.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\_ProjectHeader.cshtml.g.cs

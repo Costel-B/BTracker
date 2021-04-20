@@ -1,7 +1,10 @@
 ﻿using BTracker.Data;
+using BTracker.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,16 +16,9 @@ namespace BTracker.ViewComponents
     public class ListProjectsViewComponent: ViewComponent
     {
         private readonly ApplicationDbContext context;
-/*        private readonly HttpContextAccessor accessor;
-        private readonly UserManager<IdentityUser> userManager;
-*/
         public ListProjectsViewComponent(ApplicationDbContext context)
-/*            HttpContextAccessor accessor,
-            UserManager<IdentityUser> userManager)
-*/        {
-/*            this.accessor = accessor;
-            this.userManager = userManager;
-*/            this.context = context;
+        {
+            this.context = context;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string userId)
@@ -35,7 +31,7 @@ namespace BTracker.ViewComponents
             // With the id of the projects that I have access, use the id and show the project with that id
             var getTheProject = (from getP in context.Projects
                                  where projectsThatIHaveAccess.Contains(getP.ProjectId)
-                                 select getP).Include(x => x.User).ToList();
+                                 select getP).Include(x => x.User).OrderBy(x => x.ProjectName).ToList();
 
             return await Task.FromResult((IViewComponentResult)View("ListProjects", getTheProject));
         }

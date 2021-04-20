@@ -85,7 +85,6 @@ namespace BTracker.Controllers
 
         // GET: Sections/Edit/5
         [Authorize(Policy = "AdminAccess")]
-        [Authorize(Policy = "UserAccess")]
         public async Task<IActionResult> Edit(int? id, int? sectionId)
         {
             if (sectionId == null && id == null)

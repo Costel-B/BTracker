@@ -1,4 +1,4 @@
-﻿@model BTracker.Models.Project
+﻿@model BTracker.Models.Views.ProjectCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form enctype="multipart/form-data" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ProjectName" class="control-label"></label>
@@ -18,8 +18,17 @@
                 <span asp-validation-for="ProjectName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ProjectSmallBrief" class="control-label"></label>
+                <input asp-for="ProjectSmallBrief" class="form-control" />
+                <span asp-validation-for="ProjectSmallBrief" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="File" class="control-label"></label>
+                <input asp-for="File" class="form-control" />
+            </div>
+            <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

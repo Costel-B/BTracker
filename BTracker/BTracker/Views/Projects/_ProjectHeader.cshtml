@@ -1,0 +1,16 @@
+﻿@model BTracker.Models.Project
+
+<div class="d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-link">
+            <p~>@Html.DisplayFor(item => item.ProjectName)</p>
+        </li>
+    </ul>
+    <ul>
+        <li class="nav-link">
+            <a asp-action="List" asp-route-id="@Model.ProjectId">List</a> |
+            <a asp-action="Board" asp-route-id="@Model.ProjectId">Board</a> |
+            <a asp-action="" asp-controller="">...</a>
+        </li>
+    </ul>
+</div>

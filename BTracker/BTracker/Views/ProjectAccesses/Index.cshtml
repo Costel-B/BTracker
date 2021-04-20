@@ -1,7 +1,8 @@
-﻿@model IEnumerable<BTracker.Models.ProjectAccess>
+﻿@model BTracker.Models.Views.ProjectSectionAndTaskesViewModel
 
 @{
     ViewData["Title"] = "Index";
+    var projectName = Model.Project.ProjectName;
 }
 
 <h1>Index</h1>
@@ -13,33 +14,33 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                User
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectId)
+                Project name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AccessLevel)
+                Access level
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.ProjectAccesses) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProjectId)
+                @projectName
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AccessLevel.AccessName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ProjectAccessId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProjectAccessId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProjectAccessId">Delete</a>
+                @Html.ActionLink("Edit |", "Edit", "ProjectAccesses", new { id = Model.Project.ProjectId, projectAccessId = item.ProjectAccessId })
+                @Html.ActionLink("Details |", "Details", "ProjectAccesses", new { id = Model.Project.ProjectId, projectAccessId = item.ProjectAccessId })
+                @Html.ActionLink("Delete", "Delete", "ProjectAccesses", new { id = Model.Project.ProjectId, projectAccessId = item.ProjectAccessId })
             </td>
         </tr>
 }

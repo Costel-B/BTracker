@@ -8,6 +8,8 @@ namespace BTracker.Models.Views
     public class ProjectSectionAndTaskesViewModel
     {
         public Project Project { get; set; }
+        public string UserId { get; set; }
+        public List<ProjectAccess> ProjectAccesses { get; set; }
         public List<Section> Sections { get; set; }
         public List<Taske> Taskes { get; set; }
     }

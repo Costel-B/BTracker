@@ -1,0 +1,27 @@
+Entro no site (Animação de entrada só uma vez "Welcome to BTracker"). Entro no Index do home. Lá falo sobre o que é a minha web app, meto uns links (github e tals). Tem no header ("About us", "Contact" e "Features[ou coisa do tipo]") e do lado direito fica o butão de log in.
+
+Quando a pessoa quer criar conta, entra pelos butãos das features ("Normal" or "Bussiness"). No normal registra-se normalente, porem no bussiness o user de que pagar 10€ (cartão de crédito). Quando a pessoa entra pela primeira vez, depara-se com um botão no meio da tela para criar um projeto. O user pode criar o project.
+
+O user cria um project. Na página do index, vai paracer os projetos que tem. Ao clicar no projecto que desejo, vou aos details do project, que mostram os users que estão no project e os seus respetivos accesses e um resumo do project (podendo adicionar ficheiros). Isto acontece, caso o project não tenha nenhum nenhum section. Caso o project tenha alguma section, o user ao clicar no butão do project, ele é direcionado para uma página
+
+e butões para mudar o nome do project, adicionar usuários, adicionar sections ou apagar o project.
+
+
+
+
+
+Header
+	Left site: Bug button => Projects | Overview, Board, List
+	Right side: User nickname, Logout
+
+Users enters, and sees list of his projects. 
+Row:
+	Project Name, Overview, List, Board, ... (dropdown with "Change name, Delete")
+
+Overview: ProjectName, Project Brief, Owner, List of all the users and their accesses. On the top right corner will be three buttons, see list, see board, back to projects list.
+
+List: ProjectName, sections, taskes. On the top right corner will be three buttons, see overview, see board, back to projects list.
+
+Board: ProjectName, sections, taskes. On the top right corner will be three buttons, see overview, see list, back to projects list.
+
+

@@ -1,54 +1,41 @@
-﻿@*@model IEnumerable<BTracker.Models.Project>
-*@
-@model BTracker.Models.Views.ProjectsAndUser 
+﻿@model BTracker.Models.Views.ProjectsAndUser
 
 @{
     ViewData["Title"] = "Index";
 }
 
-@await Component.InvokeAsync("ListProjects", Model.UserId)
+@*@await Component.InvokeAsync("ListProjects", Model.UserId)
+*@
 
-<h1>Index</h1>
+<div class="container">
+    <table class="table table-striped">
+        @foreach (var project in Model.Projects)
+        {
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayFor(modelProject => project.ProjectName)</td>
+                    @if (project.UserId == ViewBag.currentUserId)
+                    {
+                        <td>
+                            Me
+                        </td>
+                    }
+                    else
+                    {
+                        <td>@Html.DisplayFor(modelProject => project.User.Email)</td>
+                    }
+                    <td>
+                        <a asp-action="Details" asp-route-id="@project.ProjectId">Details</a> |
+                        <a asp-action="List" asp-route-id="@project.ProjectId">List</a> |
+                        <a asp-action="Board" asp-route-id="@project.ProjectId">Board</a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Project Name
-            </th>
-            <th>
-                User
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Projects) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectName)
-            </td>
-            @if(item.UserId == ViewBag.currentUserId)
-            { 
-                <td>
-                    Me
-                </td>
-            }
-            else
-            { 
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Email)
-                </td>
-            }
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+
+</div>

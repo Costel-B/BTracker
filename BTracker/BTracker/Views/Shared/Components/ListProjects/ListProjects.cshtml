@@ -1,6 +1,11 @@
-﻿@model IList<BTracker.Models.Project>
+﻿@model IEnumerable<BTracker.Models.Project>
 
-@foreach (var project in Model)
-{ 
-    <a class="p-r-20" asp-action="Details" asp-controller="Projects" asp-route-id="@project.ProjectId">@project.ProjectName</a>
-}
+<div class="myProjectsContainer navbar-collapse collapse d-sm-inline-flex justify-content-between border-bottom">
+    <div>
+        @foreach (var project in Model)
+        {
+            <a asp-action="Details" asp-controller="Projects" asp-route-id="@project.ProjectId">@project.ProjectName</a>
+        }
+    </div>
+    <a class="text-right" asp-action="Create" asp-controller="Projects">Create New</a>
+</div>
