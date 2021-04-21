@@ -4,32 +4,36 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="limiter">
+    <div class="container-login100" style="min-height: 80vh">
+        <div class="wrap-login100">
+            <section>
+                <form class="login100-form validate-form" asp-action="Create">
+                    <span class="login100-form-title p-b-26">
+                        Create new <br /><b style="color: #150940">Section</b>
+                    </span>
 
-<h4>Section</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SectionName" class="control-label"></label>
-                <input asp-for="SectionName" class="form-control" />
-                <span asp-validation-for="SectionName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectId" class="control-label"></label>
-                <select asp-for="ProjectId" class ="form-control" asp-items="ViewBag.ProjectId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" asp-for="SectionName" placeholder="Section Name" type="text">
+                    </div>
+
+                    <input type="hidden" asp-for="ProjectId" value="@ViewBag.projectId" readonly />
+
+                    <div class=" text-center form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+
+
+                    <div class="text-center p-t-25">
+                        <span class="txt1">
+                            <a asp-action="@ViewBag.place" asp-controller="Projects" asp-route-id="@ViewBag.projectId"><b>Back to Project</b></a>
+                        </span>
+                    </div>
+                </form>
+            </section>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

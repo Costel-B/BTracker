@@ -19,19 +19,20 @@ namespace BTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public ProjectsController(ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
-            IHostingEnvironment hostingEnvironment)
+            IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
-            this.hostingEnvironment = hostingEnvironment;
+            this.webHostEnvironment = webHostEnvironment;
             _context = context;
         }
 
+
         // GET: Projects
-        public async Task<IActionResult> Index(IdentityUser user)
+        public async Task<IActionResult> Index()
         {
             var currentUserId = _userManager.GetUserId(User);
             ViewBag.currentUserId = currentUserId;
@@ -46,18 +47,13 @@ namespace BTracker.Controllers
                                   where projectsThatIHaveAccess.Contains(getP.ProjectId)
                                   select getP).Include(x => x.User).ToListAsync();
 
-            var projectsAndUser = new ProjectsAndUser()
-            {
-                UserId = currentUserId,
-                Projects = getTheProjects
-            };
 
-            if (getTheProjects.Count() == 0)
+            if (getTheProjects.Count == 0)
             {
                 return RedirectToAction("Create", "Projects");
             }
 
-            return View(projectsAndUser);
+            return View(getTheProjects);
         }
 
         // GET: Projects/Details/5
@@ -75,18 +71,18 @@ namespace BTracker.Controllers
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.ProjectId == id);
 
-            var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
+/*            var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
 
-            var taskesFromSection = _context.Sections.Where(x => x.ProjectId == id.Value).SelectMany(x => x.Taskes).OrderBy(x => x.Section).ToList();
+            var taskesFromSection = _context.Sections.Where(x => x.ProjectId == id.Value).SelectMany(x => x.Taskes).OrderBy(x => x.Section).ToList();*/
 
             var projectAccess = _context.ProjectAccesses.Where(x => x.ProjectId == id).Include(p => p.AccessLevel).Include(p => p.User).ToList();
 
             var projectSectionAndTaskes = new ProjectSectionAndTaskesViewModel()
             {
                 Project = project,
-                UserId = currentUserId,
+/*                UserId = currentUserId,
                 Sections = sections,
-                Taskes = taskesFromSection,
+                Taskes = taskesFromSection,*/
                 ProjectAccesses = projectAccess
             };
 
@@ -96,6 +92,40 @@ namespace BTracker.Controllers
             }
 
             return View(projectSectionAndTaskes);
+        }
+
+        public async Task<IActionResult> List(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects.Include(x => x.User).FirstOrDefaultAsync(x => x.ProjectId == id);
+
+            var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
+
+            var taskesFromSection = _context.Sections.Where(x => x.ProjectId == id).SelectMany(x => x.Taskes).OrderBy(x => x.Section).Include(x => x.Section).Include(x => x.TaskePriority).Include(x => x.TaskeState).Include(x => x.User).ToList();
+
+            ProjectSectionAndTaskesViewModel projectSectionAndTaskes = new()
+            {
+                Project = project,
+                Sections = sections,
+                Taskes = taskesFromSection
+            };
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(projectSectionAndTaskes);
+        }
+
+        // Fazer como no asana. Vai have só uma caixa de texto. O small brief. Vai ter uma função onChange em javaScript para salvar automaticamente sempre que escreva algo
+        public IActionResult _SmallProjectBrief()
+        {
+            return PartialView("_SmallProjectBrief");
         }
 
         // Partial to see the sections of the current project
@@ -123,8 +153,7 @@ namespace BTracker.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
-            var currentUserId = _userManager.GetUserId(User);
-            ViewData["UserId"] = new SelectList(_context.Users.Where(x => x.Id == currentUserId), "Id", "Email");
+            ViewBag.currentUserId = _userManager.GetUserId(User);
             return View();
         }
 
@@ -133,42 +162,17 @@ namespace BTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectSmallBrief,File,UserId")] ProjectCreateViewModel model)
+        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectSmallBrief,UserId")] Project project)
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = null;
-                string filePathView = null;
-                if(model.File != null)
-                {
-                    // uploads folder in the images foldoer of wwwroot folder
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                    // to have unique file names
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.File.FileName;
-                    // combine the path to upleads folder and the file name itself
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    model.File.CopyTo(new FileStream(filePath, FileMode.Create));
-                    filePathView = filePath;
-                }
-
-                Project newProject = new Project
-                {
-                    ProjectId = model.ProjectId,
-                    ProjectName = model.ProjectName,
-                    ProjectSmallBrief = model.ProjectSmallBrief,
-                    UserId = model.UserId,
-                    User = model.User,
-                    FilePath = uniqueFileName,
-                    FileUrl = filePathView
-                };
-
-                _context.Add(newProject);
+                _context.Add(project);
                 await _context.SaveChangesAsync();
 
                 var projectAccess = new ProjectAccess()
                 {
-                    ProjectId = newProject.ProjectId,
-                    UserId = newProject.UserId,
+                    ProjectId = project.ProjectId,
+                    UserId = project.UserId,
                     AccessLevelId = 1
                 };
                 _context.ProjectAccesses.Add(projectAccess);
@@ -176,8 +180,7 @@ namespace BTracker.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", model.UserId);
-            return View(model);
+            return View(project);
         }
 
         // GET: Projects/Edit/5

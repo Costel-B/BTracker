@@ -48,9 +48,10 @@ namespace BTracker.Controllers
 
         // GET: Sections/Create
         [Authorize(Policy = "AdminAccess")]
-        public IActionResult Create(int? id)
+        public IActionResult Create(int? id, string place)
         {
-            ViewData["ProjectId"] = new SelectList(_context.Projects.Where(x => x.ProjectId == id), "ProjectId", "ProjectName");
+            ViewBag.projectId = id;
+            ViewBag.place = place;
             return View();
         }
 

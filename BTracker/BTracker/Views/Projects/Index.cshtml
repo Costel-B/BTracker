@@ -1,15 +1,12 @@
-﻿@model BTracker.Models.Views.ProjectsAndUser
+﻿@model IEnumerable<BTracker.Models.Project>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-@*@await Component.InvokeAsync("ListProjects", Model.UserId)
-*@
-
 <div class="container">
-    <table class="table table-striped">
-        @foreach (var project in Model.Projects)
+    <table class="table table-striped m-t-25">
+        @foreach (var project in Model)
         {
             <tbody>
                 <tr>
@@ -17,25 +14,36 @@
                     @if (project.UserId == ViewBag.currentUserId)
                     {
                         <td>
-                            Me
+                            Owned by: Me
                         </td>
                     }
                     else
                     {
-                        <td>@Html.DisplayFor(modelProject => project.User.Email)</td>
+                        <td>Owned by: @Html.DisplayFor(modelProject => project.User.Email)</td>
                     }
                     <td>
                         <a asp-action="Details" asp-route-id="@project.ProjectId">Details</a> |
                         <a asp-action="List" asp-route-id="@project.ProjectId">List</a> |
                         <a asp-action="Board" asp-route-id="@project.ProjectId">Board</a>
                     </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                More
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@project.ProjectId">Change Name</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@project.ProjectId">Delete Project</a>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         }
     </table>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+    <div class="dis-flex justify-content-center">
+        <a class="btn btn-secondary" asp-action="Create">Create New Project</a>
+    </div>
 
 </div>

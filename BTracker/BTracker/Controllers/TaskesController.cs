@@ -55,12 +55,22 @@ namespace BTracker.Controllers
 
         // GET: Taskes/Create
         [Authorize (Policy = "AdminAccess")]
-        public IActionResult Create(int? id, int? sectionId)
+        public IActionResult Create(int? id, int? sectionId, string place)
         {
+            List<string> usersInProject = (from uInP in _context.ProjectAccesses
+                                 where uInP.ProjectId == id
+                                 select uInP.UserId).ToList();
+
+            var getTheUsersId = (from getUId in _context.Users
+                                 where usersInProject.Contains(getUId.Id)
+                                 select getUId);
+
+            ViewBag.place = place;
+            ViewBag.projectId = id;
             ViewData["SectionId"] = new SelectList(_context.Sections.Where(x => x.SectionId == sectionId), "SectionId", "SectionName");
             ViewData["TaskePriorityId"] = new SelectList(_context.TaskePriorities, "TaskePriorityId", "TaskePriorityName");
             ViewData["TaskeStateId"] = new SelectList(_context.TaskeStates, "TaskeStateId", "TaskeStateName");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
+            ViewData["UserId"] = new SelectList(getTheUsersId, "Id", "Email");
             return View();
         }
 

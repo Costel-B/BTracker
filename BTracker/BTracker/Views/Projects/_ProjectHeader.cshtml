@@ -1,16 +1,24 @@
 ﻿@model BTracker.Models.Project
 
-<div class="d-sm-inline-flex justify-content-between">
+<div class="dis-flex justify-content-between">
     <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-link">
-            <p~>@Html.DisplayFor(item => item.ProjectName)</p>
+            <p>@Html.DisplayFor(item => item.ProjectName)</p>
         </li>
     </ul>
     <ul>
-        <li class="nav-link">
+        <li class="nav-link dis-flex">
+            <a asp-action="Details" asp-route-id="@Model.ProjectId">Details</a> |
             <a asp-action="List" asp-route-id="@Model.ProjectId">List</a> |
             <a asp-action="Board" asp-route-id="@Model.ProjectId">Board</a> |
-            <a asp-action="" asp-controller="">...</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.ProjectId">Change Name</a>
+                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@Model.ProjectId">Delete Project</a>
+                </div>
+            </div>
         </li>
     </ul>
 </div>

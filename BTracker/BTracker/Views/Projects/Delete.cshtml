@@ -4,30 +4,30 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd class>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ProjectId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="limiter">
+    <div class="container-login100" style="min-height: 80vh">
+        <div class="wrap-login100">
+            <section>
+                <form class="login100-form validate-form" asp-action="Delete">
+
+                    <span class="login100-form-title p-b-26">
+                        Are you sure you want to delete <br /><b style="color: #150940">@Model.ProjectName</b>?
+                    </span>
+
+                    <div class="text-center">
+                        <input type="hidden" asp-for="ProjectId" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+
+                    <div class="text-center p-t-25">
+                        <span class="txt1">
+                            <a asp-action="Index"><b>Back to Projects List</b></a>
+                        </span>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+    </div>
 </div>

@@ -1,23 +1,18 @@
 ﻿@model BTracker.Models.Section
 
 <div>
-    <h4>Section</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SectionName)
-        </dt>
-        <dd class = "col-sm-10">
+        <dt class="col-sm-2">
             @Html.DisplayFor(model => model.SectionName)
-        </dd>
-        @foreach(var taske in Model.Taskes)
-        {
-            @await Html.PartialAsync("_SeeTaskeSection", taske);
-        }
+        </dt>
     </dl>
+    @foreach (var taske in Model.Taskes)
+    {
+        @await Html.PartialAsync("_SeeTaskeSection", taske);
+    }
 </div>
 <div>
-    @Html.ActionLink("Add taske", "Create", "Taskes", new { id = Model.ProjectId, sectionId = Model.SectionId }) |
+    @Html.ActionLink("Add taske", "Create", "Taskes", new { id = Model.ProjectId, sectionId = Model.SectionId, place = ViewData["Title"] }) |
     @Html.ActionLink("Change section name", "Edit", "Sections", new { id = Model.ProjectId, sectionId = Model.SectionId }) |
     @Html.ActionLink("Delete section", "Delete", "Sections", new { id = Model.ProjectId, sectionId = Model.SectionId })
 </div>

@@ -4,6 +4,60 @@
     ViewData["Title"] = "Create";
 }
 
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <section>
+                <form class="login100-form validate-form" asp-action="Create">
+                    <span class="login100-form-title p-b-26">
+                        Create a new <br /><b style="color: #150940">Task</b>
+                    </span>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" asp-for="TaskeName" placeholder="Task Name" type="text">
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" asp-for="Date">
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <select asp-for="SectionId" class="input100" asp-items="ViewBag.SectionId"></select>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <select asp-for="TaskeStateId" class="input100" asp-items="ViewBag.TaskeStateId"></select>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <select asp-for="TaskePriorityId" class="input100" asp-items="ViewBag.TaskePriorityId"></select>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <select asp-for="UserId" class="input100" asp-items="ViewBag.UserId"></select>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <button class="login100-form-btn submitFormBtn" type="submit">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center p-t-25">
+                        <span class="txt1">
+                            <a asp-action="@ViewBag.place" asp-controller="Projects" asp-route-id="@ViewBag.projectId">Back to Project</a>
+                        </span>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+@*
 <h1>Create</h1>
 
 <h4>Taske</h4>
@@ -48,7 +102,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+*@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

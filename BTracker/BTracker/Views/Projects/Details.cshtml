@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Details";
-    var filePath = "~/images" + Model.Project.FilePath ?? null;
 }
 
 <div class="container m-t-20">
@@ -16,36 +15,28 @@
             @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
         </dd>
 
-        <table class="table table-striped m-t-20">
-            <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Access</th>
-                    <th scope="col">Change access</th>
-                </tr>
-            </thead>
-            @foreach (var usersProject in Model.ProjectAccesses)
-            { 
-                @await Html.PartialAsync("_SeeUsersInProject", usersProject) 
-            }
-        </table>
-
-        <dt class="col-sm-2">
-            File
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@filePath" asp-append-version="true" />
-        </dd>
-        <dd class="col-sm-10">
-            <a class="btn btn-outline-primary" href="@Model.Project.FilePath">See file</a>
-        </dd>
     </dl>
+    <table class="table table-striped m-t-20">
+        <thead>
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Access</th>
+                <th scope="col">Change access</th>
+            </tr>
+        </thead>
+        @foreach (var usersProject in Model.ProjectAccesses)
+        { 
+            @await Html.PartialAsync("_SeeUsersInProject", usersProject) 
+        }
+    </table>
     <div>
-        @Html.ActionLink("Add section", "Create", "Sections", new { id = Model.Project.ProjectId }) |
-        @Html.ActionLink("Add user", "Create", "ProjectAccesses", new { id = Model.Project.ProjectId }) |
-        @Html.ActionLink("Edit user", "Index", "ProjectAccesses", new { id = Model.Project.ProjectId }) |
-        <a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a> |
-        <a asp-action="Delete" asp-route-id="@Model.Project.ProjectId">Delete</a> |
-        <a asp-action="Index">Back to List</a>
+        <ul class="list-inline dis-flex justify-content-between">
+            <li class="list-inline-item">
+                @Html.ActionLink("Add user", "Create", "ProjectAccesses", new { id = Model.Project.ProjectId }) 
+            </li>
+            <li class="list-inline-item">
+                <a asp-action="Index">Back to Projects List</a>
+            </li>
+        </ul>
     </div>
 </div>
