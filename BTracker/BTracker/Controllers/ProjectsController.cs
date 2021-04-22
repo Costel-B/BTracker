@@ -122,6 +122,29 @@ namespace BTracker.Controllers
             return View(projectSectionAndTaskes);
         }
 
+        public async Task<IActionResult> Board(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects.Include(x => x.User).FirstOrDefaultAsync(x => x.ProjectId == id);
+
+            var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
+
+            var taskesFromSection = _context.Sections.Where(x => x.ProjectId == id).SelectMany(x => x.Taskes).OrderBy(x => x.Section).Include(x => x.Section).Include(x => x.TaskePriority).Include(x => x.TaskeState).Include(x => x.User).ToList();
+
+            ProjectSectionAndTaskesViewModel projectSectionAndTaskes = new()
+            {
+                Project = project,
+                Sections = sections,
+                Taskes = taskesFromSection
+            };
+
+            return View(projectSectionAndTaskes);
+        }
+
         // Fazer como no asana. Vai have só uma caixa de texto. O small brief. Vai ter uma função onChange em javaScript para salvar automaticamente sempre que escreva algo
         public IActionResult _SmallProjectBrief()
         {
@@ -153,7 +176,9 @@ namespace BTracker.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
-            ViewBag.currentUserId = _userManager.GetUserId(User);
+            var currentUserId = _userManager.GetUserId(User);
+            ViewBag.currentUserId = currentUserId;
+            ViewBag.countProjects = _context.Projects.Where(x => x.UserId == currentUserId).Count();
             return View();
         }
 

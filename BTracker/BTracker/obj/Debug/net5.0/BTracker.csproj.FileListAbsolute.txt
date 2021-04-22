@@ -509,3 +509,7 @@ C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Shared\C
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\_SeeUsersInProject.cshtml.g.cs
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\_ProjectHeader.cshtml.g.cs
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\List.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\Board.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Taskes\CreateTest.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\SendGrid.dll
+C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\StarkbankEcdsa.dll

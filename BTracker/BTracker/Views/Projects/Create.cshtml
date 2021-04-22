@@ -23,13 +23,15 @@
                     <div class=" text-center form-group">
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
-
-
-                    <div class="text-center p-t-25">
-                        <span class="txt1">
-                            <a asp-action="Index"><b>Back to Projects List</b></a>
-                        </span>
-                    </div>
+                    
+                    @if (ViewBag.countProjects != 0)
+                    { 
+                        <div class="text-center p-t-25">
+                            <span class="txt1">
+                                <a asp-action="Index"><b>Back to Projects List</b></a>
+                            </span>
+                        </div>
+                    }
                 </form>
             </section>
         </div>

@@ -1,16 +1,39 @@
 ﻿@model BTracker.Models.Section
+@{
+    var pageName = ViewData["Title"].ToString();
+}
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayFor(model => model.SectionName)
-        </dt>
-    </dl>
-    @foreach (var taske in Model.Taskes)
-    {
-        @await Html.PartialAsync("_SeeTaskeSection", taske);
-    }
-</div>
+@if (pageName == "List")
+{
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayFor(model => model.SectionName)
+            </dt>
+        </dl>
+        @foreach (var taske in Model.Taskes)
+        {
+            @await Html.PartialAsync("_SeeTaskeSection", taske);
+        }
+    </div>
+}
+else if (pageName == "Board")
+{
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SectionName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SectionName)
+            </dd>
+        </dl>
+        @foreach (var taske in Model.Taskes)
+        {
+            @await Html.PartialAsync("_SeeTaskeSection", taske);
+        }
+    </div>
+}
 <div>
     @Html.ActionLink("Add taske", "Create", "Taskes", new { id = Model.ProjectId, sectionId = Model.SectionId, place = ViewData["Title"] }) |
     @Html.ActionLink("Change section name", "Edit", "Sections", new { id = Model.ProjectId, sectionId = Model.SectionId }) |

@@ -32,5 +32,7 @@ namespace BTracker.Models
         // Assign a user to a certain project
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        public bool IsDone { get; set; }
     }
 }

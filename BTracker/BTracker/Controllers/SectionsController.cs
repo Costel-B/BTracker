@@ -139,7 +139,7 @@ namespace BTracker.Controllers
         }
 
         // GET: Sections/Delete/5
-        [Authorize (Policy = "AdminAccess, UserAccess")]
+        [Authorize (Policy = "AdminAccess")]
         public async Task<IActionResult> Delete(int? id, int? sectionId)
         {
             if (id == null && sectionId == null)

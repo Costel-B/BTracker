@@ -79,7 +79,7 @@ namespace BTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, int sectionId, [Bind("TaskeId,TaskeName,Date,SectionId,TaskeStateId,TaskePriorityId,UserId")] Taske taske)
+        public async Task<IActionResult> Create(int id, int sectionId, [Bind("TaskeId,TaskeName,Date,SectionId,TaskeStateId,TaskePriorityId,UserId,IsDone")] Taske taske)
         {
             if (ModelState.IsValid)
             {
