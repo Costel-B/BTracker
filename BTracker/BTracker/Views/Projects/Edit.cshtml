@@ -4,34 +4,37 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Project</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ProjectId" />
-            <div class="form-group">
-                <label asp-for="ProjectName" class="control-label"></label>
-                <input asp-for="ProjectName" class="form-control" />
-                <span asp-validation-for="ProjectName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="limiter">
+    <div class="container-login100" style="min-height: 80vh">
+        <div class="wrap-login100">
+            <section>
+                <form class="login100-form validate-form" asp-action="Edit">
+                    <span class="login100-form-title p-b-26">
+                        Change Project Name
+                    </span>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="ProjectId" />
+                    <input type="hidden" asp-for="UserId" value="@ViewBag.currentUserId" />
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" asp-for="ProjectName" placeholder="Project Name" />
+                    </div>
+
+                    <div class=" text-center form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+
+                    <div class="text-center p-t-25">
+                        <span class="txt1">
+                            <a asp-action="@ViewBag.place" asp-controller="Projects" asp-route-id="@ViewBag.projectId"><b>Back to Project</b></a>
+                        </span>
+                    </div>
+                </form>
+            </section>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

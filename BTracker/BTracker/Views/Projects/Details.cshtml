@@ -5,16 +5,28 @@
 }
 
 <div class="container m-t-20">
-    @await Html.PartialAsync("_ProjectHeader", Model.Project) 
+    @await Html.PartialAsync("_ProjectHeader", Model.Project)
     <dl class="row">
-
-        <dt class="col-sm-2">
-            What we will make
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
-        </dd>
-
+        @if (Model.Project.ProjectSmallBrief == null)
+        { 
+            <dt class="col-sm-2">
+                <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">
+                    Add a Small Brief
+                </a>
+            </dt>
+        }
+        else
+        { 
+            <dt class="col-sm-2">
+                What we will make
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
+            </dd>
+            <dd class="col-sm-10">
+                <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit the Small Brief</a>
+            </dd>
+        }
     </dl>
     <table class="table table-striped m-t-20">
         <thead>
@@ -25,14 +37,44 @@
             </tr>
         </thead>
         @foreach (var usersProject in Model.ProjectAccesses)
-        { 
-            @await Html.PartialAsync("_SeeUsersInProject", usersProject) 
+        {
+            @await Html.PartialAsync("_SeeUsersInProject", usersProject)
         }
     </table>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Add a brief or files to explain your project
+        </dt>
+        <dd>
+            @if (Model.Project.ProjectBrief == null)
+            {
+            <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Brief |</a>
+            }
+            else
+            {
+            <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit Brief |</a>
+            }
+            <a asp-action="AddFile" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Files</a>
+            @if (Model.Project.FilePath != null)
+            {
+                <p>You have added a file @Model.Project.FilePath</p>
+                <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download</a>
+            }
+        </dd>
+    </dl>
+    @if (Model.Project.ProjectBrief != null)
+    { 
+        <div>
+            <h4>Projects Brief</h4>
+            <p>@Html.DisplayFor(model => model.Project.ProjectBrief)</p>
+        </div>
+    }
+    <hr />
     <div>
         <ul class="list-inline dis-flex justify-content-between">
             <li class="list-inline-item">
-                @Html.ActionLink("Add user", "Create", "ProjectAccesses", new { id = Model.Project.ProjectId }) 
+                @Html.ActionLink("Add user", "Create", "ProjectAccesses", new { id = Model.Project.ProjectId })
             </li>
             <li class="list-inline-item">
                 <a asp-action="Index">Back to Projects List</a>

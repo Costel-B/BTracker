@@ -2,10 +2,14 @@
 
 <tbody>
     <tr>
-        <td>@Html.DisplayFor(item => item.User.Email)</td>
-        <td>@Html.DisplayFor(item => item.AccessLevel.AccessName)</td>
         <td>
-            <a asp-action="Edit" asp-controller="ProjectAccesses" asp-route-id="@Model.ProjectId">Edit</a>
+            @Html.DisplayFor(model => model.User.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.AccessLevel.AccessName)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-controller="ProjectAccesses" asp-route-id="@Model.ProjectId" asp-route-projectAccessId="@Model.ProjectAccessId">Edit</a>
         </td>
     </tr>
 </tbody>

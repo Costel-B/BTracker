@@ -20,7 +20,6 @@ namespace BTracker.Models
         public string ProjectBrief { get; set; }
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         public string FilePath { get; set; }
-        public string FileUrl { get; set; }
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         // When is created a new project, the current user is the owner
         [Required]

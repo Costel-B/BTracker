@@ -32,7 +32,9 @@
                                 More
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@project.ProjectId">Change Name</a>
+                                <a>
+                                    @Html.ActionLink("Change Name", "Edit", "Projects", new { id = project.ProjectId, place = ViewBag.place })
+                                </a>
                                 <a class="dropdown-item" asp-action="Delete" asp-route-id="@project.ProjectId">Delete Project</a>
                             </div>
                         </div>

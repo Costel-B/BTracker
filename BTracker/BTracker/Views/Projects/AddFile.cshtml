@@ -1,0 +1,19 @@
+﻿@model BTracker.Models.Views.ProjectViewModel
+
+@{
+    ViewData["Title"] = "AddFile";
+}
+
+<form method="post" enctype="multipart/form-data" asp-action="AddFile">
+    <div class="form-group">
+        <div class="col-ms-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" asp-for="File" name="file" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>

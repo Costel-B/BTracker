@@ -31,6 +31,11 @@ namespace BTracker.Controllers
         }
 
 
+
+
+
+
+
         // GET: Projects
         public async Task<IActionResult> Index()
         {
@@ -55,6 +60,11 @@ namespace BTracker.Controllers
 
             return View(getTheProjects);
         }
+
+
+
+
+
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -90,7 +100,7 @@ namespace BTracker.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(projectSectionAndTaskes);
         }
 
@@ -145,12 +155,6 @@ namespace BTracker.Controllers
             return View(projectSectionAndTaskes);
         }
 
-        // Fazer como no asana. Vai have só uma caixa de texto. O small brief. Vai ter uma função onChange em javaScript para salvar automaticamente sempre que escreva algo
-        public IActionResult _SmallProjectBrief()
-        {
-            return PartialView("_SmallProjectBrief");
-        }
-
         // Partial to see the sections of the current project
         public IActionResult _SeeSectionProject()
         {
@@ -172,6 +176,11 @@ namespace BTracker.Controllers
         {
             return PartialView("_ProjectHeader");
         }
+
+
+
+
+
 
         // GET: Projects/Create
         public IActionResult Create()
@@ -208,11 +217,211 @@ namespace BTracker.Controllers
             return View(project);
         }
 
-        // GET: Projects/Edit/5
+
+
+
+
+
+        public IActionResult DownloadFile(int? id, string filePath)
+        {
+            var project = _context.Projects.FirstOrDefault(x => x.ProjectId == id);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            string fileName = $"{project.ProjectName}_Brief.pdf";
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+
+
+
+
+
+        // GET: Projects/AddSmallBrief
         [Authorize(Policy = "AdminAccess")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> AddFile(int? id)
         {
             ViewBag.currentUserId = _userManager.GetUserId(User);
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects.FindAsync(id);
+            ViewBag.projectName = project.ProjectName;
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            ProjectViewModel projectViewModel = new()
+            {
+                Project = project
+            };
+
+            return View(projectViewModel);
+        }
+        // POST: Projects/AddSmallBrief/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFile(int id, ProjectViewModel projectViewModel)
+        {
+            if (projectViewModel.File != null)
+            {
+                // upload files to wwwroot
+                var fileName = Path.GetFileName(projectViewModel.File.FileName);
+                // judge if it is a pdf file
+                string ext = Path.GetExtension(projectViewModel.File.FileName);
+                if (ext.ToLower() != ".pdf")
+                {
+                    return View();
+                }
+                var filePath = Path.Combine(webHostEnvironment.WebRootPath, "images", fileName);
+
+                using (var fileSteam = new FileStream(filePath, FileMode.Create))
+                {
+                    await projectViewModel.File.CopyToAsync(fileSteam);
+                }
+
+                var project = _context.Projects.FirstOrDefault(x => x.ProjectId == id);
+                project.FilePath = filePath;
+
+                _context.Projects.Update(project);
+                await _context.SaveChangesAsync();
+
+                RedirectToAction("Details", "Projects", new { id });
+            }
+
+            return View();
+        }
+
+
+
+
+
+
+        // GET: Projects/AddSmallBrief
+        [Authorize(Policy = "AdminAccess")]
+        public async Task<IActionResult> AddSmallBrief(int? id)
+        {
+            ViewBag.currentUserId = _userManager.GetUserId(User);
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(project);
+        }
+
+        // POST: Projects/AddSmallBrief/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddSmallBrief(int id, [Bind("ProjectId,ProjectName,ProjectSmallBrief,UserId")] Project project)
+        {
+            if (id != project.ProjectId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(project);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProjectExists(project.ProjectId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Details", "Projects", new { id });
+            }
+            return View(project);
+        }
+
+
+
+
+
+
+        // GET: Projects/AddBrief
+        [Authorize(Policy = "AdminAccess")]
+        public async Task<IActionResult> AddBrief(int? id)
+        {
+            ViewBag.currentUserId = _userManager.GetUserId(User);
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(project);
+        }
+
+        // POST: Projects/AddBrief/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddBrief(int id, [Bind("ProjectId,ProjectName,ProjectBrief,UserId")] Project project)
+        {
+            if (id != project.ProjectId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(project);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProjectExists(project.ProjectId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Details", "Projects", new { id });
+            }
+            return View(project);
+        }
+
+
+
+
+
+
+        // GET: Projects/Edit/5
+        [Authorize(Policy = "AdminAccess")]
+        public async Task<IActionResult> Edit(int? id, string place)
+        {
+            ViewBag.currentUserId = _userManager.GetUserId(User);
+            ViewBag.projectId = id;
+            ViewBag.place = place;
 
             if (id == null)
             {
@@ -263,6 +472,10 @@ namespace BTracker.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", project.UserId);
             return View(project);
         }
+
+
+
+
 
         // GET: Projects/Delete/5
         [Authorize(Policy = "AdminAccess")]

@@ -1,0 +1,33 @@
+﻿@model BTracker.Models.Project
+
+@{
+    ViewData["Title"] = "AddBrief";
+}
+
+<h1>AddBrief</h1>
+
+<h4>Project</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddBrief">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProjectId" />
+            <input type="hidden" asp-for="ProjectName" />
+            <input type="hidden" asp-for="UserId" value="@ViewBag.currentUserId" />
+            <div class="form-group">
+                <label asp-for="ProjectBrief" class="control-label"></label>
+                <input asp-for="ProjectBrief" class="form-control" />
+                <span asp-validation-for="ProjectBrief" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
