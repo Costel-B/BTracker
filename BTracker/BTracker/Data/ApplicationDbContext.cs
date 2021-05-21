@@ -22,9 +22,9 @@ namespace BTracker.Data
         // Section related models
         public DbSet<Section> Sections { get; set; }
 
-        // Taske related models
-        public DbSet<TaskePriority> TaskePriorities { get; set; }
-        public DbSet<TaskeState> TaskeStates { get; set; }
-        public DbSet<Taske> Taskes { get; set; }
+        // Ticket related models
+        public DbSet<TicketPriority> TicketPriorities { get; set; }
+        public DbSet<TicketState> TicketStates { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

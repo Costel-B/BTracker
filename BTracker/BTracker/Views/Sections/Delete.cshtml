@@ -18,6 +18,12 @@
             @Html.DisplayFor(model => model.SectionName)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ToUser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ToUser.Id)
+        </dd class>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Project)
         </dt>
         <dd class = "col-sm-10">
@@ -25,7 +31,7 @@
         </dd class>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="Delete" asp-route-id="@ViewBag.projectId" asp-route-place="@ViewBag.place">
         <input type="hidden" asp-for="SectionId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>

@@ -20,8 +20,8 @@ Row:
 
 Overview: ProjectName, Project Brief, Owner, List of all the users and their accesses. On the top right corner will be three buttons, see list, see board, back to projects list.
 
-List: ProjectName, sections, taskes. On the top right corner will be three buttons, see overview, see board, back to projects list.
+List: ProjectName, sections, tickets. On the top right corner will be three buttons, see overview, see board, back to projects list.
 
-Board: ProjectName, sections, taskes. On the top right corner will be three buttons, see overview, see list, back to projects list.
+Board: ProjectName, sections, tickets. On the top right corner will be three buttons, see overview, see list, back to projects list.
 
 

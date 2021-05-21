@@ -11,19 +11,14 @@
                 Register confirmation
             </span>
             <div class="text-center p-t-25">
-                @if (Model.DisplayConfirmAccountLink)
-                { 
-                    <span class="txt1">
-                        This app does not currently have a real email sender registered, see <a class="txt1" href="https://aka.ms/aspaccountconf"><b>these docs</b></a> for how to configure a real email sender.
-                        Normally this would be emailed: <a class="txt1" id="confirm-link" href="@Model.EmailConfirmationUrl"><b>Click here to confirm your account</b></a>
-                    </span>
-                }
-                else
-                { 
-                    <span class="txt1">
-                                    Please check your email to confirm your account.
-                    </span>
-                }
+                <span class="txt1">
+                                Please check your email to confirm your account.
+                </span>
+                <span class="txt1">
+                    <a asp-controller="Home" asp-action="Index">
+                        <b>Return Home</b>
+                    </a>
+                </span>
             </div>
         </div>
     </div>

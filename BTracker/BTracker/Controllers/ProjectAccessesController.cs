@@ -31,7 +31,7 @@ namespace BTracker.Controllers
             var project = _context.Projects.FirstOrDefault(x => x.ProjectId == id);
             var projectAccesses = await _context.ProjectAccesses.Where(x => x.ProjectId == id).Include(p => p.AccessLevel).Include(p => p.User).ToListAsync();
 
-            var projectAccess = new ProjectSectionAndTaskesViewModel()
+            var projectAccess = new ProjectSectionAndTicketsViewModel()
             {
                 Project = project,
                 ProjectAccesses = projectAccesses

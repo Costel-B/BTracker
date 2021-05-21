@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BTracker.Data.Migrations
+namespace BTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -16,7 +16,7 @@ namespace BTracker.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BTracker.Models.AccessLevel", b =>
@@ -43,9 +43,6 @@ namespace BTracker.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FilePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProjectBrief")
@@ -109,16 +106,21 @@ namespace BTracker.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ToUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("SectionId");
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("ToUserId");
+
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("BTracker.Models.Taske", b =>
+            modelBuilder.Entity("BTracker.Models.Ticket", b =>
                 {
-                    b.Property<int>("TaskeId")
+                    b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -132,62 +134,62 @@ namespace BTracker.Data.Migrations
                     b.Property<int>("SectionId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TaskeName")
+                    b.Property<string>("TicketName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskePriorityId")
+                    b.Property<int>("TicketPriorityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TaskeStateId")
+                    b.Property<int>("TicketStateId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("TaskeId");
+                    b.HasKey("TicketId");
 
                     b.HasIndex("SectionId");
 
-                    b.HasIndex("TaskePriorityId");
+                    b.HasIndex("TicketPriorityId");
 
-                    b.HasIndex("TaskeStateId");
+                    b.HasIndex("TicketStateId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Taskes");
+                    b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("BTracker.Models.TaskePriority", b =>
+            modelBuilder.Entity("BTracker.Models.TicketPriority", b =>
                 {
-                    b.Property<int>("TaskePriorityId")
+                    b.Property<int>("TicketPriorityId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("TaskePriorityName")
+                    b.Property<string>("TicketPriorityName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TaskePriorityId");
+                    b.HasKey("TicketPriorityId");
 
-                    b.ToTable("TaskePriorities");
+                    b.ToTable("TicketPriorities");
                 });
 
-            modelBuilder.Entity("BTracker.Models.TaskeState", b =>
+            modelBuilder.Entity("BTracker.Models.TicketState", b =>
                 {
-                    b.Property<int>("TaskeStateId")
+                    b.Property<int>("TicketStateId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("TaskeStateName")
+                    b.Property<string>("TicketStateName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TaskeStateId");
+                    b.HasKey("TicketStateId");
 
-                    b.ToTable("TaskeStates");
+                    b.ToTable("TicketStates");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -428,26 +430,32 @@ namespace BTracker.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ToUser")
+                        .WithMany()
+                        .HasForeignKey("ToUserId");
+
                     b.Navigation("Project");
+
+                    b.Navigation("ToUser");
                 });
 
-            modelBuilder.Entity("BTracker.Models.Taske", b =>
+            modelBuilder.Entity("BTracker.Models.Ticket", b =>
                 {
                     b.HasOne("BTracker.Models.Section", "Section")
-                        .WithMany("Taskes")
+                        .WithMany("Tickets")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BTracker.Models.TaskePriority", "TaskePriority")
-                        .WithMany("Taskes")
-                        .HasForeignKey("TaskePriorityId")
+                    b.HasOne("BTracker.Models.TicketPriority", "TicketPriority")
+                        .WithMany("Tickets")
+                        .HasForeignKey("TicketPriorityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BTracker.Models.TaskeState", "TaskeState")
-                        .WithMany("Taskes")
-                        .HasForeignKey("TaskeStateId")
+                    b.HasOne("BTracker.Models.TicketState", "TicketState")
+                        .WithMany("Tickets")
+                        .HasForeignKey("TicketStateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -457,9 +465,9 @@ namespace BTracker.Data.Migrations
 
                     b.Navigation("Section");
 
-                    b.Navigation("TaskePriority");
+                    b.Navigation("TicketPriority");
 
-                    b.Navigation("TaskeState");
+                    b.Navigation("TicketState");
 
                     b.Navigation("User");
                 });
@@ -527,17 +535,17 @@ namespace BTracker.Data.Migrations
 
             modelBuilder.Entity("BTracker.Models.Section", b =>
                 {
-                    b.Navigation("Taskes");
+                    b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("BTracker.Models.TaskePriority", b =>
+            modelBuilder.Entity("BTracker.Models.TicketPriority", b =>
                 {
-                    b.Navigation("Taskes");
+                    b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("BTracker.Models.TaskeState", b =>
+            modelBuilder.Entity("BTracker.Models.TicketState", b =>
                 {
-                    b.Navigation("Taskes");
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

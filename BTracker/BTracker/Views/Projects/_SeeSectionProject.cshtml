@@ -10,10 +10,22 @@
             <dt class="col-sm-2">
                 @Html.DisplayFor(model => model.SectionName)
             </dt>
+            @if(Model.ToUserId == null)
+            {
+               <dt class="txt1">
+                   <a asp-action="UserToSection" asp-controller="Sections" asp-route-id="@Model.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-place="@ViewData["Title"]"><b>Assign User</b></a>
+               </dt>     
+            }
+            else
+            { 
+                <dt class="txt1">
+                    Assigned To: @Html.DisplayFor(model => model.ToUser.Email)
+                </dt>
+            }
         </dl>
-        @foreach (var taske in Model.Taskes)
+        @foreach (var ticket in Model.Tickets)
         {
-            @await Html.PartialAsync("_SeeTaskeSection", taske);
+            @await Html.PartialAsync("_SeeTicketSection", ticket);
         }
     </div>
 }
@@ -28,14 +40,9 @@ else if (pageName == "Board")
                 @Html.DisplayFor(model => model.SectionName)
             </dd>
         </dl>
-        @foreach (var taske in Model.Taskes)
+        @foreach (var ticket in Model.Tickets)
         {
-            @await Html.PartialAsync("_SeeTaskeSection", taske);
+            @await Html.PartialAsync("_SeeTicketSection", ticket);
         }
     </div>
 }
-<div>
-    @Html.ActionLink("Add taske", "Create", "Taskes", new { id = Model.ProjectId, sectionId = Model.SectionId, place = ViewData["Title"] }) |
-    @Html.ActionLink("Change section name", "Edit", "Sections", new { id = Model.ProjectId, sectionId = Model.SectionId }) |
-    @Html.ActionLink("Delete section", "Delete", "Sections", new { id = Model.ProjectId, sectionId = Model.SectionId })
-</div>

@@ -1,0 +1,7 @@
+Admin(1) - he can do everything (usually who creates the project)
+
+Developer(2) - Can change the status of a ticket
+
+Project Manager(3) - Can assign users and develpers to projects
+
+Submitter(4) - can creates new tickets on a project

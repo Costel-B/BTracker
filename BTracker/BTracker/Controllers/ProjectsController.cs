@@ -52,7 +52,6 @@ namespace BTracker.Controllers
                                   where projectsThatIHaveAccess.Contains(getP.ProjectId)
                                   select getP).Include(x => x.User).ToListAsync();
 
-
             if (getTheProjects.Count == 0)
             {
                 return RedirectToAction("Create", "Projects");
@@ -83,16 +82,33 @@ namespace BTracker.Controllers
 
 /*            var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
 
-            var taskesFromSection = _context.Sections.Where(x => x.ProjectId == id.Value).SelectMany(x => x.Taskes).OrderBy(x => x.Section).ToList();*/
+            var ticketsFromSection = _context.Sections.Where(x => x.ProjectId == id.Value).SelectMany(x => x.Tickets).OrderBy(x => x.Section).ToList();*/
 
             var projectAccess = _context.ProjectAccesses.Where(x => x.ProjectId == id).Include(p => p.AccessLevel).Include(p => p.User).ToList();
 
-            var projectSectionAndTaskes = new ProjectSectionAndTaskesViewModel()
+            var projectAccessLevel = (from t in _context.ProjectAccesses
+                       where t.ProjectId == id && t.UserId == currentUserId
+                       select t.AccessLevelId).Single();
+
+            switch (projectAccessLevel)
+            {
+                case 1:
+                    ViewBag.projectAccessLevel = 1;
+                    break;
+                case 2:
+                    ViewBag.projectAccessLevel = 2;
+                    break;
+                default:
+                    ViewBag.projectAccessLevel = 3;
+                    break;
+            }
+
+            var projectSectionAndTickets = new ProjectSectionAndTicketsViewModel()
             {
                 Project = project,
 /*                UserId = currentUserId,
                 Sections = sections,
-                Taskes = taskesFromSection,*/
+                Tickets = ticketsFromSection,*/
                 ProjectAccesses = projectAccess
             };
 
@@ -101,7 +117,7 @@ namespace BTracker.Controllers
                 return NotFound();
             }
             
-            return View(projectSectionAndTaskes);
+            return View(projectSectionAndTickets);
         }
 
         public async Task<IActionResult> List(int? id)
@@ -115,13 +131,13 @@ namespace BTracker.Controllers
 
             var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
 
-            var taskesFromSection = _context.Sections.Where(x => x.ProjectId == id).SelectMany(x => x.Taskes).OrderBy(x => x.Section).Include(x => x.Section).Include(x => x.TaskePriority).Include(x => x.TaskeState).Include(x => x.User).ToList();
+            var ticketsFromSection = _context.Sections.Where(x => x.ProjectId == id).SelectMany(x => x.Tickets).OrderBy(x => x.Section).Include(x => x.Section).Include(x => x.TicketPriority).Include(x => x.TicketState).Include(x => x.User).ToList();
 
-            ProjectSectionAndTaskesViewModel projectSectionAndTaskes = new()
+            ProjectSectionAndTicketsViewModel projectSectionAndTickets = new()
             {
                 Project = project,
                 Sections = sections,
-                Taskes = taskesFromSection
+                Tickets = ticketsFromSection
             };
 
             if (project == null)
@@ -129,7 +145,7 @@ namespace BTracker.Controllers
                 return NotFound();
             }
 
-            return View(projectSectionAndTaskes);
+            return View(projectSectionAndTickets);
         }
 
         public async Task<IActionResult> Board(int? id)
@@ -143,16 +159,16 @@ namespace BTracker.Controllers
 
             var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
 
-            var taskesFromSection = _context.Sections.Where(x => x.ProjectId == id).SelectMany(x => x.Taskes).OrderBy(x => x.Section).Include(x => x.Section).Include(x => x.TaskePriority).Include(x => x.TaskeState).Include(x => x.User).ToList();
+            var ticketsFromSection = _context.Sections.Where(x => x.ProjectId == id).SelectMany(x => x.Tickets).OrderBy(x => x.Section).Include(x => x.Section).Include(x => x.TicketPriority).Include(x => x.TicketState).Include(x => x.User).ToList();
 
-            ProjectSectionAndTaskesViewModel projectSectionAndTaskes = new()
+            ProjectSectionAndTicketsViewModel projectSectionAndTickets = new()
             {
                 Project = project,
                 Sections = sections,
-                Taskes = taskesFromSection
+                Tickets = ticketsFromSection
             };
 
-            return View(projectSectionAndTaskes);
+            return View(projectSectionAndTickets);
         }
 
         // Partial to see the sections of the current project
@@ -162,9 +178,9 @@ namespace BTracker.Controllers
         }
 
         // Partial to see the tasks of the sections of the current project
-        public IActionResult _SeeTaskeSection()
+        public IActionResult _SeeTicketSection()
         {
-            return PartialView("_SeeTaskeSection");
+            return PartialView("_SeeTicketSection");
         }
 
         public IActionResult _SeeUsersInProject()
@@ -177,6 +193,11 @@ namespace BTracker.Controllers
             return PartialView("_ProjectHeader");
         }
 
+        public IActionResult _ProjectFooter()
+        {
+            return PartialView("_ProjectFooter");
+        }
+
 
 
 
@@ -187,7 +208,10 @@ namespace BTracker.Controllers
         {
             var currentUserId = _userManager.GetUserId(User);
             ViewBag.currentUserId = currentUserId;
-            ViewBag.countProjects = _context.Projects.Where(x => x.UserId == currentUserId).Count();
+            var projectsIHaveAccess = (from pIA in _context.ProjectAccesses
+                                       where pIA.UserId == currentUserId
+                                       select pIA.ProjectId).ToList();
+            ViewBag.countProjects = projectsIHaveAccess.Count();
             return View();
         }
 
@@ -211,6 +235,14 @@ namespace BTracker.Controllers
                 };
                 _context.ProjectAccesses.Add(projectAccess);
                 await _context.SaveChangesAsync();
+
+/*                var sectionAdded = new Section()
+                {
+                    ProjectId = project.ProjectId,
+                    SectionName = "EmptySectionNullSection1.2.3.4.5"
+                };
+                _context.Sections.Add(sectionAdded);
+                await _context.SaveChangesAsync();*/
 
                 return RedirectToAction(nameof(Index));
             }
@@ -240,6 +272,7 @@ namespace BTracker.Controllers
         public async Task<IActionResult> AddFile(int? id)
         {
             ViewBag.currentUserId = _userManager.GetUserId(User);
+            ViewBag.projectId = id;
 
             if (id == null)
             {
@@ -288,7 +321,24 @@ namespace BTracker.Controllers
                 _context.Projects.Update(project);
                 await _context.SaveChangesAsync();
 
-                RedirectToAction("Details", "Projects", new { id });
+                // see what files every project has
+                // remove the files that have different urls
+                string[] files = Directory.GetFiles(Path.Combine(webHostEnvironment.WebRootPath, "images"));
+
+                var existingFiles = _context.Projects.Select(x => x.FilePath).ToList();
+
+                foreach (string file in files)
+                {
+                    foreach (string existingFile in existingFiles)
+                    {
+                        if (existingFile != file)
+                        {
+                            System.IO.File.Delete(file);
+                        };
+                    };
+                };
+
+                return RedirectToAction("Details", "Projects", new { id });
             }
 
             return View();
@@ -304,6 +354,7 @@ namespace BTracker.Controllers
         public async Task<IActionResult> AddSmallBrief(int? id)
         {
             ViewBag.currentUserId = _userManager.GetUserId(User);
+            ViewBag.projectId = id;
 
             if (id == null)
             {
@@ -362,6 +413,7 @@ namespace BTracker.Controllers
         public async Task<IActionResult> AddBrief(int? id)
         {
             ViewBag.currentUserId = _userManager.GetUserId(User);
+            ViewBag.projectId = id;
 
             if (id == null)
             {
@@ -507,6 +559,23 @@ namespace BTracker.Controllers
             var project = await _context.Projects.FindAsync(id);
             _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
+
+
+
+            // List of all project access of the project
+            var projectAccessList = _context.ProjectAccesses.Where(x => x.ProjectId == id);
+            // delete the list
+            foreach (var item in projectAccessList)
+            {
+                _context.ProjectAccesses.Remove(item);
+            }
+
+
+
+            var projectAccess = await _context.ProjectAccesses.FindAsync(id);
+            _context.ProjectAccesses.Remove(projectAccess);
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

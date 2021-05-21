@@ -1,4 +1,4 @@
-﻿@model BTracker.Models.Views.ProjectSectionAndTaskesViewModel
+﻿@model BTracker.Models.Views.ProjectSectionAndTicketsViewModel
 
 @{
     ViewData["Title"] = "List";
@@ -14,21 +14,13 @@
             <div>
                 @await Html.PartialAsync("_SeeSectionProject", section)
             </div>
+            <div>
+                @Html.ActionLink("Add ticket", "Create", "Tickets", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] }) |
+                @Html.ActionLink("Edit Sections", "Edit", "Sections", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] }) |
+                @Html.ActionLink("Delete section", "Delete", "Sections", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] })
+            </div>
         }
     </div>
     <hr />
-    <div>
-        <ul class="list-inline dis-flex justify-content-between">
-            <li class="list-inline-item">
-                @Html.ActionLink("Add Sections", "Create", "Sections", new { id = Model.Project.ProjectId, place = ViewData["Title"] })
-            </li>
-            <li class="list-inline-item">
-                <a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a>
-            </li>
-            <li class="list-inline-item">
-                <a asp-action="Index">Back to List</a>
-            </li>
-        </ul>
-
-    </div>
+    @await Html.PartialAsync("_ProjectFooter") 
 </div>

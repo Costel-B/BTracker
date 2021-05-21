@@ -1,4 +1,4 @@
-﻿@model BTracker.Models.Views.ProjectSectionAndTaskesViewModel
+﻿@model BTracker.Models.Views.ProjectSectionAndTicketsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -7,25 +7,40 @@
 <div class="container m-t-20">
     @await Html.PartialAsync("_ProjectHeader", Model.Project)
     <dl class="row">
-        @if (Model.Project.ProjectSmallBrief == null)
-        { 
-            <dt class="col-sm-2">
-                <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">
-                    Add a Small Brief
-                </a>
-            </dt>
+        @if (ViewBag.projectAccessLevel == 1)
+        {
+            @if (Model.Project.ProjectSmallBrief == null)
+            {
+                <dt class="col-sm-2">
+                    <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">
+                        Add a Small Brief
+                    </a>
+                </dt>
+            }
+            else
+            {
+                <dt class="col-sm-2">
+                    What we will make
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
+                </dd>
+                <dd class="col-sm-10">
+                    <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit the Small Brief</a>
+                </dd>
+            }
         }
         else
-        { 
-            <dt class="col-sm-2">
-                What we will make
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
-            </dd>
-            <dd class="col-sm-10">
-                <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit the Small Brief</a>
-            </dd>
+        {
+            @if (Model.Project.ProjectSmallBrief != null)
+            {
+                <dt class="col-sm-2">
+                    What we will make
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
+                </dd>
+            }
         }
     </dl>
     <table class="table table-striped m-t-20">
@@ -38,30 +53,88 @@
         </thead>
         @foreach (var usersProject in Model.ProjectAccesses)
         {
-            @await Html.PartialAsync("_SeeUsersInProject", usersProject)
+            @await Html.PartialAsync("_SeeUsersInProject", usersProject )
         }
     </table>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            Add a brief or files to explain your project
-        </dt>
-        <dd>
-            @if (Model.Project.ProjectBrief == null)
+        @if (ViewBag.projectAccessLevel == 1)
+        {
+            @if (Model.Project.ProjectBrief == null && Model.Project.FilePath == null)
             {
-            <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Brief |</a>
+                <dt class="col-sm-2">
+                    Add a brief or a pdf files to explain your project
+                </dt>
             }
-            else
+            else if (Model.Project.ProjectBrief == null && Model.Project.FilePath != null)
             {
-            <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit Brief |</a>
+                <dt class="col-sm-2">
+                    Add a brief or see the existing pdf file
+                </dt>
             }
-            <a asp-action="AddFile" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Files</a>
-            @if (Model.Project.FilePath != null)
+            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
             {
-                <p>You have added a file @Model.Project.FilePath</p>
-                <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download</a>
+                <dt class="col-sm-2">
+                    See or edit the brief or add a pdf file
+                </dt>
             }
-        </dd>
+            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
+            {
+                <dt class="col-sm-2">
+                    Edit brief or pdf file
+                </dt>
+            }
+            <dd>
+                @if (Model.Project.ProjectBrief == null)
+                {
+                    <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Brief to Explain your Project |</a>
+                }
+                else
+                {
+                    <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit Brief |</a>
+                }
+                @if (Model.Project.FilePath == null)
+                {
+                    <a asp-action="AddFile" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Files</a>
+                }
+                else
+                {
+                    <p>You have added a file @Model.Project.FilePath</p>
+                    <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download</a>
+                }
+            </dd>
+        }
+        else
+        {
+            @if (Model.Project.ProjectBrief == null && Model.Project.FilePath != null)
+            {
+                <dt class="col-sm-2">
+                    Download the pdf file
+                </dt>
+            }
+            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
+            {
+                <dt class="col-sm-2">
+                    See the brief
+                </dt>
+            }
+            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
+            {
+                <dt class="col-sm-2">
+                    See brief or download pdf file
+                </dt>
+            }
+            <dd>
+                @if (Model.Project.ProjectBrief != null)
+                {
+                    <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">See Brief |</a>
+                }
+                @if (Model.Project.FilePath != null)
+                {
+                    <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download</a>
+                }
+            </dd>
+        }
     </dl>
     @if (Model.Project.ProjectBrief != null)
     { 

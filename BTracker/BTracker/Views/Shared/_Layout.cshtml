@@ -18,53 +18,56 @@
     <link rel="stylesheet" type="text/css" href="~/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/css/main.css">
     <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-
 </head>
 
 <body style="height: 100vh; background-color: #F0EFF3">
-@if (ViewData["Title"].ToString() == "Log in")
-{
+    @if (ViewData["Title"].ToString() == "Log in")
+    {
 
-}
-else if (ViewData["Title"].ToString() == "Register")
-{
+    }
+    else if (ViewData["Title"].ToString() == "Register")
+    {
 
-}
-else if (ViewData["Title"].ToString() == "Forgot your password?")
-{
+    }
+    else if (ViewData["Title"].ToString() == "Forgot your password?")
+    {
 
-}
-else if (ViewData["Title"].ToString() == "Register confirmation")
-{
+    }
+    else if (ViewData["Title"].ToString() == "Register confirmation")
+    {
 
-}
-else if (ViewData["Title"].ToString() == "Confirm email")
-{ 
+    }
+    else if (ViewData["Title"].ToString() == "Confirm email")
+    {
 
-}
-else
-{
-    <header style="background-color: white">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom">
-            <div class="container col-lg">
-                <partial name="_LogoHeaderRedirect" />
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <partial name="_HeaderPartial" />
-                    <partial name="_LoginPartial" />
+    }
+    else
+    {
+        <header style="background-color: white">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom">
+                <div class="container col-lg">
+                    <partial name="_LogoHeaderRedirect" />
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <partial name="_HeaderPartial" />
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-}
+            </nav>
+        </header>
+    }
     <div>
         <main role="main">
             @RenderBody()
         </main>
     </div>
+
+    <!--Stripe Js-->
+    <script src="~/js/stripe.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

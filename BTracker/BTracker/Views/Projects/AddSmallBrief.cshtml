@@ -15,7 +15,7 @@
             <input type="hidden" asp-for="ProjectId" />
             <input type="hidden" asp-for="ProjectName" class="form-control" />
             <div class="form-group">
-                <label asp-for="ProjectSmallBrief" class="control-label"></label>
+                <label class="control-label">What we will make</label>
                 <input asp-for="ProjectSmallBrief" class="form-control" />
                 <span asp-validation-for="ProjectSmallBrief" class="text-danger"></span>
             </div>
@@ -28,6 +28,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Back to Details", "Details", "Projects", new { id = ViewBag.projectId })
 </div>
 

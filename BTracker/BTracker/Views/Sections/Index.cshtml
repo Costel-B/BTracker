@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.SectionName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ToUser)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Project)
             </th>
             <th></th>
@@ -26,6 +29,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.SectionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToUser.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Project.ProjectName)
