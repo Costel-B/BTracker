@@ -16,7 +16,7 @@
             </div>
             <div>
                 @Html.ActionLink("Add ticket", "Create", "Tickets", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] }) |
-                @Html.ActionLink("Edit Sections", "Edit", "Sections", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] }) |
+                @Html.ActionLink("Edit Section", "Edit", "Sections", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] }) |
                 @Html.ActionLink("Delete section", "Delete", "Sections", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] })
             </div>
         }

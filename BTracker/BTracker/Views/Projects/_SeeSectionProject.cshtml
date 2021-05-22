@@ -21,6 +21,9 @@
                 <dt class="txt1">
                     Assigned To: @Html.DisplayFor(model => model.ToUser.Email)
                 </dt>
+                <form asp-action="RemoveAssignSectionUser" method="post" asp-route-id="@Model.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-place="@ViewData["Title"]">
+                    <button type="submit" name="button">Remove Assigned User</button>
+                </form>
             }
         </dl>
         @foreach (var ticket in Model.Tickets)

@@ -236,6 +236,19 @@ namespace BTracker.Controllers
             }
             return View(section);
         }
+        public async Task<IActionResult> RemoveAssignSectionUser(int? id, int? sectionId, string place)
+        {
+            if (id == null && sectionId == null)
+            {
+                return BadRequest();
+            }
+
+            var section = await _context.Sections.FindAsync(sectionId);
+            _context.Remove(section.ToUserId);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(place, "Projects", new { id });
+        }
 
 
 

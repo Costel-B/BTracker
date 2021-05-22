@@ -129,7 +129,7 @@ namespace BTracker.Controllers
 
             var project = await _context.Projects.Include(x => x.User).FirstOrDefaultAsync(x => x.ProjectId == id);
 
-            var sections = _context.Sections.Where(x => x.ProjectId == id).ToList();
+            var sections = _context.Sections.Where(x => x.ProjectId == id).Include(x => x.ToUser).ToList();
 
             var ticketsFromSection = _context.Sections.Where(x => x.ProjectId == id).SelectMany(x => x.Tickets).OrderBy(x => x.Section).Include(x => x.Section).Include(x => x.TicketPriority).Include(x => x.TicketState).Include(x => x.User).ToList();
 
@@ -582,6 +582,22 @@ namespace BTracker.Controllers
         private bool ProjectExists(int id)
         {
             return _context.Projects.Any(e => e.ProjectId == id);
+        }
+
+        public async Task<IActionResult> RemoveAssignSectionUser(int? id, int? sectionId, string place)
+        {
+            if (id == null && sectionId == null)
+            {
+                return BadRequest();
+            }
+
+            var section = await _context.Sections.FindAsync(sectionId);
+
+            section.ToUserId = null;
+            _context.Sections.Update(section);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(place, "Projects", new { id });
         }
     }
 }
