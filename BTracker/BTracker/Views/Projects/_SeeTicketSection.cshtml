@@ -1,46 +1,56 @@
 ﻿@model BTracker.Models.Ticket
 
-@if(Model.TicketName != "EmptyTicketNullTicket1.2.3.4.5")
-{ 
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Section)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Section.SectionName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketState)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketState.TicketStateName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPriority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketPriority.TicketPriorityName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-    </dl>
+@if (Model.TicketName != "EmptyTicketNullTicket1.2.3.4.5")
+{
     <div>
-        @Html.ActionLink("Edit Ticket", "Edit", "Tickets", new { id = Model.Section.ProjectId, sectionId = Model.SectionId, ticketId = Model.TicketId })
+        <hr class="hr" />
+        <dl class="row dis-flex m-b-0" style="flex-direction: row; align-items: center;">
+            <dd class="col-8 m-b-0 p-r-0 p-l-40">
+                <a asp-action="Details" asp-controller="Tickets" asp-route-id="@Model.Section.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-ticketId="@Model.TicketId" asp-route-place="@ViewBag.place">@Html.DisplayFor(model => model.TicketName)</a>
+            </dd>
+            @if (Model.UserId == null)
+            {
+                <dt class="txt1 col-1 text-center">
+                    <a asp-action="UserToTicket" asp-controller="Tickets" asp-route-id="@Model.Section.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-ticketId="@Model.TicketId" asp-route-place="@ViewData["Title"]"><b>Assign User To Ticket</b></a>
+                </dt>
+
+            }
+            else
+            {
+                <div style="display: flex; flex-direction: column; text-align: center;">
+                    <dd class="m-b-0" style="width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center;">
+                        @Html.DisplayFor(model => model.User.Email)
+                    </dd>
+                    <form asp-action="RemoveAssignTicketUser" method="post" asp-route-id="@Model.Section.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-ticketId="@Model.TicketId" asp-route-place="@ViewData["Title"]">
+                        <button class="txt1" type="submit" name="button">Remove Assigned User</button>
+                    </form>
+                </div>
+            }
+
+            @if (Model.Date == DateTime.MinValue)
+            {
+                <dt class="txt1 col-1 text-center">
+                    <a asp-action="AddTicketDueDate" asp-controller="Tickets" asp-route-id="@Model.Section.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-ticketId="@Model.TicketId" asp-route-place="@ViewData["Title"]"><b>Add Due Date</b></a>
+                </dt>
+            }
+            else
+            { 
+                <div style="display: flex; flex-direction: column; text-align: center;">
+                    <dd class="m-b-0" style="width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center;">
+                        @Html.DisplayFor(model => model.Date)
+                    </dd>
+                    <form asp-action="RemoveTicketDate" method="post" asp-route-id="@Model.Section.ProjectId" asp-route-ticketId="@Model.TicketId" asp-route-place="@ViewData["Title"]">
+                        <button class="txt1" type="submit" name="button">Remove Due Date</button>
+                    </form>
+                </div>
+            }
+            <dd class="col-1 text-center m-b-0">
+                @Html.DisplayFor(model => model.TicketState.TicketStateName)
+            </dd>
+            <dd class="text-center col-1 m-b-0">
+                @Html.DisplayFor(model => model.TicketPriority.TicketPriorityName)
+            </dd>
+        </dl>
+        <hr class="hr" />
     </div>
 }

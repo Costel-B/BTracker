@@ -5,47 +5,44 @@
 
 @if (pageName == "List")
 {
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayFor(model => model.SectionName)
-            </dt>
-            @if(Model.ToUserId == null)
-            {
-               <dt class="txt1">
-                   <a asp-action="UserToSection" asp-controller="Sections" asp-route-id="@Model.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-place="@ViewData["Title"]"><b>Assign User</b></a>
-               </dt>     
-            }
-            else
-            { 
-                <dt class="txt1">
-                    Assigned To: @Html.DisplayFor(model => model.ToUser.Email)
-                </dt>
-                <form asp-action="RemoveAssignSectionUser" method="post" asp-route-id="@Model.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-place="@ViewData["Title"]">
-                    <button type="submit" name="button">Remove Assigned User</button>
-                </form>
-            }
-        </dl>
-        @foreach (var ticket in Model.Tickets)
-        {
-            @await Html.PartialAsync("_SeeTicketSection", ticket);
-        }
-    </div>
-}
-else if (pageName == "Board")
-{
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SectionName)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.SectionName)
-            </dd>
-        </dl>
-        @foreach (var ticket in Model.Tickets)
-        {
-            @await Html.PartialAsync("_SeeTicketSection", ticket);
-        }
+    <div id="accordion" class="m-b-20">
+        <div class="card" style="border: none;">
+            <div class="card-header dis-flex" style="flex-direction: row; padding: 0; align-items: center; justify-items: flex-start; width: auto; background-color: #F0EFF3; border: none" id="heading-@Model.SectionId ">
+                <h5 class="mb-0 col-8 p-l-20">
+                    <a class="btn" style="font-size: 18px; font-weight: 600; color: #150940; border: 1px solid #150940; border-radius: 5px;" data-toggle="collapse" href="#collapse-@Model.SectionId" role="button" aria-expanded="false" aria-controls="collapse-@Model.SectionId">
+                        @Html.DisplayFor(model => model.SectionName)
+                    </a>
+                </h5>
+                @if (Model.ToUserId == null)
+                {
+                    <div class="txt1 col-1 text-center">
+                        <a style="font-weight: 600" asp-action="AddTicketDueDate" asp-controller="Tickets" asp-route-id="@Model.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-place="@ViewData["Title"]">Assign Section User</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="txt1">
+                        Assigned To: @Html.DisplayFor(model => model.ToUser.Email)
+                    </div>
+                    <form asp-action="RemoveAssignSectionUser" method="post" asp-route-id="@Model.ProjectId" asp-route-sectionId="@Model.SectionId" asp-route-place="@ViewData["Title"]">
+                        <button type="submit" name="button">Remove Assigned User</button>
+                    </form>
+                }
+            </div>
+
+            <div id="collapse-@Model.SectionId" class="collapse hide" aria-labelledby="heading-@Model.SectionId" data-parent="#accordion">
+                <div class="card-body" style="background-color: #F0EFF3;">
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        @await Html.PartialAsync("_SeeTicketSection", ticket);  
+                    }
+                    <div>
+                        @Html.ActionLink("Add ticket", "Create", "Tickets", new { id = Model.ProjectId, sectionId = Model.SectionId, place = ViewData["Title"] }) |
+                        @Html.ActionLink("Change Section Name", "Edit", "Sections", new { id = Model.ProjectId, sectionId = Model.SectionId, place = ViewData["Title"] }) |
+                        @Html.ActionLink("Delete section", "Delete", "Sections", new { id = Model.ProjectId, sectionId = Model.SectionId, place = ViewData["Title"] })
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }

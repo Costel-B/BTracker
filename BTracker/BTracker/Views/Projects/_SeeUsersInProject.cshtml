@@ -2,13 +2,13 @@
 
 <tbody>
     <tr>
-        <td>
+        <td class="column1">
             @Html.DisplayFor(model => model.User.Email)
         </td>
-        <td>
+        <td class="column2">
             @Html.DisplayFor(model => model.AccessLevel.AccessName)
         </td>
-        <td>
+        <td class="column3">
             <a asp-action="Edit" asp-controller="ProjectAccesses" asp-route-id="@Model.ProjectId" asp-route-projectAccessId="@Model.ProjectAccessId">Edit</a>
         </td>
     </tr>

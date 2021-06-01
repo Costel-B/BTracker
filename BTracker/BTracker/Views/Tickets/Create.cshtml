@@ -9,34 +9,30 @@
     <div class="container-login100">
         <div class="wrap-login100">
             <section>
-                <form class="login100-form validate-form" asp-action="Create">
+                <form class="login100-form validate-form" asp-action="Create" asp-route-projectId ="@ViewBag.projectId" asp-route-sectionId="@ViewBag.sectionId" asp-route-place="@ViewBag.place">
+                    <input type="hidden" asp-for="SubmitterId" value="@ViewBag.currentUserId" />
                     <span class="login100-form-title p-b-26">
-                        Create a new <br /><b style="color: #150940">Task</b>
+                        Create a new <br /><b style="color: #150940">Ticket</b>
                     </span>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="wrap-input100 validate-input">
-                        <input class="input100" asp-for="TicketName" placeholder="Task Name" type="text">
+                        <input class="input100" asp-for="TicketName" placeholder="Ticket Name" type="text">
                     </div>
 
                     <div class="wrap-input100 validate-input">
-                        <input class="input100" asp-for="Date">
-                    </div>
-
-                    <div class="wrap-input100 validate-input">
+                        <p class="txt1">Section Name:</p>
                         <select asp-for="SectionId" class="input100" asp-items="ViewBag.SectionId"></select>
                     </div>
 
                     <div class="wrap-input100 validate-input">
+                        <p class="txt1">Ticket State:</p>
                         <select asp-for="TicketStateId" class="input100" asp-items="ViewBag.TicketStateId"></select>
                     </div>
 
                     <div class="wrap-input100 validate-input">
+                        <p class="txt1">Ticket Priority:</p>
                         <select asp-for="TicketPriorityId" class="input100" asp-items="ViewBag.TicketPriorityId"></select>
-                    </div>
-
-                    <div class="wrap-input100 validate-input">
-                        <select asp-for="UserId" class="input100" asp-items="ViewBag.UserId"></select>
                     </div>
 
                     <div class="container-login100-form-btn">

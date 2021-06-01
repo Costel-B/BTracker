@@ -7,20 +7,25 @@
 
 <div class="m-b-20 m-t-20 m-l-40 m-r-40">
     @await Html.PartialAsync("_ProjectHeader", Model.Project)
-    <hr />
+    <div class="m-t-20 m-b-20" style="color: #BAB8B8; border-top: 1px solid #BAB8B8; padding: 5px 0px; border-bottom: 1px solid #BAB8B8">
+        <ul class="dis-flex text-center">
+            <li class="col-8 text-left">Task Name</li>
+            <li class="col-1">Assigne</li>
+            <li class="col-1">Due Date</li>
+            <li class="col-1">State</li>
+            <li class="col-1">Priority</li>
+        </ul>
+    </div>
     <div>
         @foreach (var section in Model.Sections)
         {
             <div>
                 @await Html.PartialAsync("_SeeSectionProject", section)
             </div>
-            <div>
-                @Html.ActionLink("Add ticket", "Create", "Tickets", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] }) |
-                @Html.ActionLink("Edit Section", "Edit", "Sections", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] }) |
-                @Html.ActionLink("Delete section", "Delete", "Sections", new { id = section.ProjectId, sectionId = section.SectionId, place = ViewData["Title"] })
-            </div>
         }
     </div>
-    <hr />
-    @await Html.PartialAsync("_ProjectFooter") 
+    <div class="m-t-40">
+        <hr class="hr"/>
+        @await Html.PartialAsync("_ProjectFooter") 
+    </div>
 </div>

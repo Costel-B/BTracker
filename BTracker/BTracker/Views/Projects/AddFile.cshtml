@@ -4,6 +4,38 @@
     ViewData["Title"] = "AddFile";
 }
 
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100" style="width: auto;">
+            <section>
+                <form class="login100-form validate-form" id="account" method="post" enctype="multipart/form-data" asp-action="AddFile">
+                    <span class="login100-form-title p-b-26">
+                        Attach a <b style="color: #150940">Pdf File</b> to explain the goal of the project
+                    </span>
+
+                    <div class="wrap-input100 validate-input" style="border-bottom: 0px;">
+                        <input type="file" asp-for="File" name="file" />
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <button class="login100-form-btn submitFormBtn" type="submit">
+                                Attach File
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center p-t-25">
+                        <span class="txt1">
+                            @Html.ActionLink("Back to Details", "Details", "Projects", new { id = ViewBag.projectId })
+                        </span>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+@*
 <form method="post" enctype="multipart/form-data" asp-action="AddFile">
     <div class="form-group">
         <div class="col-ms-10">
@@ -16,4 +48,4 @@
             <input type="submit" value="Save" />
         </div>
     </div>
-</form>
+</form>*@

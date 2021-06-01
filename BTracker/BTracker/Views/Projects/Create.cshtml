@@ -18,6 +18,9 @@
                         <input class="input100" asp-for="ProjectName" placeholder="Project Name" type="text">
                     </div>
 
+                    <input type="hidden" asp-for="ProjectBrief" value="@null" readonly />
+                    <input type="hidden" asp-for="ProjectSmallBrief" value="@null" readonly />
+                    <input type="hidden" asp-for="FilePath" value="@null" readonly />
                     <input type="hidden" asp-for="UserId" value="@ViewBag.currentUserId" readonly />
 
                     <div class=" text-center form-group">

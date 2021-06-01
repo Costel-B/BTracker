@@ -1,10 +1,7 @@
-﻿<div>
+﻿<div style="margin: 0px 20px;">
     <ul class="list-inline dis-flex justify-content-between">
         <li class="list-inline-item">
             @Html.ActionLink("Add Sections", "Create", "Sections", new { id = Model.Project.ProjectId, place = ViewData["Title"] })
-        </li>
-        <li class="list-inline-item">
-            <a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Change Project Name</a>
         </li>
         <li class="list-inline-item">
             <a asp-action="Index">Back to Projects List</a>

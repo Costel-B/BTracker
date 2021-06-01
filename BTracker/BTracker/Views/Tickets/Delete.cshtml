@@ -50,8 +50,8 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="TicketId" />
+        <input type="hidden" asp-for="TicketId" asp-route-id="@ViewBag.projectId" asp-route-ticketId="@Model.TicketId" asp-route-place="@ViewBag.place" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="@ViewBag.place" asp-controller="Projects" asp-route-id="@ViewBag.projectId">Back to List</a>
     </form>
 </div>

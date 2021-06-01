@@ -494,7 +494,6 @@ C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\NWebsec.AspNetCore.C
 C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\NWebsec.AspNetCore.Mvc.dll
 C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\NWebsec.AspNetCore.Mvc.TagHelpers.dll
 C:\Dev\Programs\BTracker\BTracker\BTracker\bin\Debug\net5.0\WebEssentials.AspNetCore.Pwa.dll
-C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Shared\Components\ListProjects\ListProjects.cshtml.g.cs
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\_ProjectHeader.cshtml.g.cs
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\List.cshtml.g.cs
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Projects\Board.cshtml.g.cs
@@ -522,3 +521,12 @@ C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Sections
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Sections\Edit.cshtml.g.cs
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Sections\Index.cshtml.g.cs
 C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Sections\UserToSection.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Tickets\UserToTicket.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Tickets\AddTicketDueDate.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Tickets\_TicketHeader.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Comments\Create.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Comments\Delete.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Comments\Details.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Comments\Edit.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Comments\Index.cshtml.g.cs
+C:\Dev\Programs\BTracker\BTracker\BTracker\obj\Debug\net5.0\Razor\Views\Shared\Components\DisplayComment\Default.cshtml.g.cs

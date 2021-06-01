@@ -1,54 +1,167 @@
-﻿@model BTracker.Models.Ticket
+﻿@model BTracker.Models.Views.TicketViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="container m-t-20">
+    <div style="padding: 10px 0px; margin-bottom: 20px; border-bottom: 1px solid rgb(0, 0, 0, 0.1)">
+        @await Html.PartialAsync("_TicketHeader", Model.Ticket)
+    </div>
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Section)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Section.SectionName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketState)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketState.TicketStateName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPriority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketPriority.TicketPriorityName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.TicketId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="limiter" style="padding: 0px 0px 20px 0px;">
+        <div class="wrap-table100">
+            <div class="table100">
+                <table class="detailsTicketTable">
+                    <tbody>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                Ticket Description:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    @if (Model.Ticket.TicketDescription == null)
+                                    {
+                                        <dt>
+                                            <a id="indexProjectLink" asp-action="Edit" asp-controller="Tickets" asp-route-id="@Model.Ticket.Section.ProjectId" asp-route-sectionId="@Model.Ticket.SectionId" asp-route-ticketId="@Model.Ticket.TicketId" asp-route-place="@ViewData["Title"]">
+                                                Add a ticket description
+                                            </a>
+                                        </dt>
+                                    }
+                                    else
+                                    {
+                                        <dt>
+                                            @Html.DisplayFor(model => model.Ticket.TicketDescription)
+                                        </dt>
+                                    }
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                User Assigned:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    @if (Model.Ticket.UserId == null)
+                                    {
+                                        <dt>
+                                            <a id="indexProjectLink" asp-action="Edit" asp-controller="Tickets" asp-route-id="@Model.Ticket.Section.ProjectId" asp-route-sectionId="@Model.Ticket.SectionId" asp-route-ticketId="@Model.Ticket.TicketId" asp-route-place="@ViewData["Title"]">
+                                                Assign User To Ticket
+                                            </a>
+                                        </dt>
+                                    }
+                                    else
+                                    {
+                                        <dt>
+                                            @Html.DisplayFor(model => model.Ticket.User.Email)
+                                        </dt>
+                                    }
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                Project Name:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    <dt>
+                                        @Html.DisplayFor(model => model.Ticket.Section.Project.ProjectName)
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                Ticket State:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    <dt>
+                                        @Html.DisplayFor(model => model.Ticket.TicketState.TicketStateName)
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                Ticket Priority:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    <dt>
+                                        @Html.DisplayFor(model => model.Ticket.TicketPriority.TicketPriorityName)
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                Ticket Limit Date:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    <dt>
+                                        @Html.DisplayFor(model => model.Ticket.Date)
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                Submitter:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    <dt>
+                                        @Html.DisplayFor(model => model.Ticket.Submitter.Email)
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="dis-flex flex-row align-items-center">
+                            <td class="col-8">
+                                Ticket Creation Date:
+                            </td>
+                            <td class="col-4">
+                                <dl class="m-b-0">
+                                    <dt>
+                                        @Html.DisplayFor(model => model.Ticket.CreateDate)
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <form asp-action="Create" method="post" asp-controller="Comments">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Comment.TicketId" value="@Model.Ticket.TicketId" />
+            <input type="hidden" asp-for="Comment.UserId" value="@ViewBag.userId" />
+
+            <div class="form-group">
+                <label asp-for="Comment.Content" class="control-label"></label>
+                <input asp-for="Comment.Content" class="form-control" />
+                <span asp-validation-for="Comment.Content" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+    <div>
+        @await Component.InvokeAsync("DisplayComment", new { Model.Ticket.TicketId })
+    </div>
+
+    <div>
+        <a asp-action="List" asp-controller="Projects" asp-route-id="@ViewBag.id">Back to List</a>
+    </div>
 </div>

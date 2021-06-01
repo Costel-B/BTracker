@@ -15,6 +15,8 @@ namespace BTracker.Models
         [Required]
         public string TicketName { get; set; }
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        public string TicketDescription { get; set; }
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         // It will be possible to assign a final date until the project needs to be done
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
@@ -33,6 +35,13 @@ namespace BTracker.Models
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        public bool IsDone { get; set; }
+        public string SubmitterId { get; set; }
+        public IdentityUser Submitter { get; set; }
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime CreateDate { get; set; }
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        public ICollection<Comment> Comments { get; set; }
     }
 }

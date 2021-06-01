@@ -35,6 +35,36 @@ namespace BTracker.Migrations
                     b.ToTable("AccessLevels");
                 });
 
+            modelBuilder.Entity("BTracker.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("BTracker.Models.Project", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -125,14 +155,20 @@ namespace BTracker.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("bit");
-
                     b.Property<int>("SectionId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SubmitterId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TicketDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TicketName")
                         .IsRequired()
@@ -150,6 +186,8 @@ namespace BTracker.Migrations
                     b.HasKey("TicketId");
 
                     b.HasIndex("SectionId");
+
+                    b.HasIndex("SubmitterId");
 
                     b.HasIndex("TicketPriorityId");
 
@@ -392,6 +430,25 @@ namespace BTracker.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BTracker.Models.Comment", b =>
+                {
+                    b.HasOne("BTracker.Models.Ticket", "Ticket")
+                        .WithMany("Comments")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ticket");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BTracker.Models.Project", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -447,6 +504,10 @@ namespace BTracker.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Submitter")
+                        .WithMany()
+                        .HasForeignKey("SubmitterId");
+
                     b.HasOne("BTracker.Models.TicketPriority", "TicketPriority")
                         .WithMany("Tickets")
                         .HasForeignKey("TicketPriorityId")
@@ -464,6 +525,8 @@ namespace BTracker.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Section");
+
+                    b.Navigation("Submitter");
 
                     b.Navigation("TicketPriority");
 
@@ -536,6 +599,11 @@ namespace BTracker.Migrations
             modelBuilder.Entity("BTracker.Models.Section", b =>
                 {
                     b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("BTracker.Models.Ticket", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("BTracker.Models.TicketPriority", b =>

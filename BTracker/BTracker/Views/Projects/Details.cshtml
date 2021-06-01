@@ -5,29 +5,38 @@
 }
 
 <div class="container m-t-20">
-    @await Html.PartialAsync("_ProjectHeader", Model.Project)
-    <dl class="row">
+    <div style="padding: 10px 0px; border-bottom: 1px solid rgb(0, 0, 0, 0.1)">
+        @await Html.PartialAsync("_ProjectHeader", Model.Project)
+    </div>
+    <dl class="row" style="padding: 20px 0px 40px 0px; margin: 0px -15px 20px -15px;">
         @if (ViewBag.projectAccessLevel == 1)
         {
             @if (Model.Project.ProjectSmallBrief == null)
             {
-                <dt class="col-sm-2">
-                    <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">
-                        Add a Small Brief
+                <dt style="margin: 15px 15px 45px 15px;">
+                    <a id="indexProjectLink" asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">
+                        Add a small srief to explain the project
                     </a>
                 </dt>
             }
             else
             {
-                <dt class="col-sm-2">
-                    What we will make
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
-                </dd>
-                <dd class="col-sm-10">
-                    <a asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit the Small Brief</a>
-                </dd>
+                <div class="dis-flex" style="flex-direction: row; width: 100%; align-items: baseline">
+                    <dt style="margin: 0px 15px; display: block; font-size: 16px; font-weight: 500;">
+                        What we will make:
+                    </dt>
+                    <dd class="col-sm-10 p-l-0" style="font-size: 14px;">
+                        @Html.DisplayFor(model => model.Project.ProjectSmallBrief)
+                    </dd>
+                </div>
+                <div style="display: flex; flex-direction: row; width: 100%; align-items: baseline;">
+                    <dd class="col-auto" style="padding-bottom: 0px;">
+                        <a style="border: 1px solid #666; border-radius: 5px; padding: 5px 10px;" asp-action="AddSmallBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit the Small Brief</a>
+                    </dd>
+                    <form asp-action="RemoveSmallProjectBrief" method="post" asp-route-id="@Model.Project.ProjectId">
+                        <button style="font-size: 14px; color: #666; border: 1px solid #666; border-radius: 5px; padding: 4px 10px" type="submit" name="button">Delete Small Brief</button>
+                    </form>
+                </div>
             }
         }
         else
@@ -43,112 +52,168 @@
             }
         }
     </dl>
-    <table class="table table-striped m-t-20">
-        <thead>
-            <tr>
-                <th scope="col">User</th>
-                <th scope="col">Access</th>
-                <th scope="col">Change access</th>
-            </tr>
-        </thead>
-        @foreach (var usersProject in Model.ProjectAccesses)
-        {
-            @await Html.PartialAsync("_SeeUsersInProject", usersProject )
-        }
-    </table>
-    <hr />
-    <dl class="row">
-        @if (ViewBag.projectAccessLevel == 1)
-        {
-            @if (Model.Project.ProjectBrief == null && Model.Project.FilePath == null)
-            {
-                <dt class="col-sm-2">
-                    Add a brief or a pdf files to explain your project
-                </dt>
-            }
-            else if (Model.Project.ProjectBrief == null && Model.Project.FilePath != null)
-            {
-                <dt class="col-sm-2">
-                    Add a brief or see the existing pdf file
-                </dt>
-            }
-            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
-            {
-                <dt class="col-sm-2">
-                    See or edit the brief or add a pdf file
-                </dt>
-            }
-            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
-            {
-                <dt class="col-sm-2">
-                    Edit brief or pdf file
-                </dt>
-            }
-            <dd>
+
+    <div class="limiter" style="padding: 0px 0px 20px 0px;">
+        <div class="wrap-table100">
+            <div class="table100">
+                <table id="tableUsers" class="tableUsers">
+                    <thead>
+                        <tr class="table100-head">
+                            <th scope="col" class="purple column1">Users In Project</th>
+                            <th scope="col" class="purple column2">Access Type</th>
+                            <th scope="col" class="column3"></th>
+                        </tr>
+                    </thead>
+                    @foreach (var usersProject in Model.ProjectAccesses)
+                    {
+                        @await Html.PartialAsync("_SeeUsersInProject", usersProject)
+                    }
+                </table>
+                <ul class="list-inline dis-flex" style="justify-content: flex-end;">
+                    <li class="list-inline-item">
+                        <a id="indexProjectLink" asp-action="Create" asp-controller="ProjectAccesses" asp-route-id="@Model.Project.ProjectId">
+                            Add User
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p style="display: block; font-size: 16px; font-weight: 500; color: #212529;">
+            Key Resources
+        </p>
+        <p style="display: block; font-size: 14px; font-weight: 400; color: #212529;">
+            Align your team around a shared vision with a project brief and supporting files.
+        </p>
+        <div class="dis-flex" style="flex-direction: column;">
+            <div class="m-t-20 dis-flex" style="flex-direction: row; justify-content: flex-start">
                 @if (Model.Project.ProjectBrief == null)
                 {
-                    <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Brief to Explain your Project |</a>
+                    <a id="addBriefLink" asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Create Project Brief</a>
                 }
                 else
                 {
-                    <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit Brief |</a>
+                    <a id="addBriefLink" asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">See Project Brief</a>
                 }
                 @if (Model.Project.FilePath == null)
                 {
-                    <a asp-action="AddFile" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Files</a>
+                    <a id="addPathLink" asp-action="AddFile" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Attach a file</a>
                 }
                 else
                 {
-                    <p>You have added a file @Model.Project.FilePath</p>
-                    <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download</a>
+                    <a id="addPathLink" asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download File</a>
                 }
-            </dd>
-        }
-        else
-        {
-            @if (Model.Project.ProjectBrief == null && Model.Project.FilePath != null)
-            {
-                <dt class="col-sm-2">
-                    Download the pdf file
-                </dt>
-            }
-            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
-            {
-                <dt class="col-sm-2">
-                    See the brief
-                </dt>
-            }
-            else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
-            {
-                <dt class="col-sm-2">
-                    See brief or download pdf file
-                </dt>
-            }
-            <dd>
+            </div>
+            <div class="dis-flex" style="flex-direction: row; justify-content: flex-start">
                 @if (Model.Project.ProjectBrief != null)
-                {
-                    <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">See Brief |</a>
+                { 
+                    <form class="m-r-40" asp-action="RemoveProjectBrief" method="post" asp-route-id="@Model.Project.ProjectId">
+                        <button style="font-size: 14px; color: #666; padding: 4px 0px" type="submit" name="button">Delete Project Brief</button>
+                    </form>
                 }
+
                 @if (Model.Project.FilePath != null)
-                {
-                    <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download</a>
+                { 
+                    <form asp-action="RemoveProjectFile" method="post" asp-route-id="@Model.Project.ProjectId">
+                        <button style="font-size: 14px; color: #666; padding: 4px 0px" type="submit" name="button">Remove File</button>
+                    </form>
                 }
-            </dd>
-        }
-    </dl>
-    @if (Model.Project.ProjectBrief != null)
-    { 
-        <div>
-            <h4>Projects Brief</h4>
-            <p>@Html.DisplayFor(model => model.Project.ProjectBrief)</p>
+            </div>
         </div>
-    }
-    <hr />
-    <div>
+    </div>
+    @*    <dl class="row">
+            @if (ViewBag.projectAccessLevel == 1)
+            {
+                @if (Model.Project.ProjectBrief == null && Model.Project.FilePath == null)
+                {
+                    <dt style="margin: 0px 15px; display: block; font-size: 16px; font-weight: 500; display: inline-block; width: 100%;">
+                        Add a brief or a pdf files to explain your project
+                    </dt>
+                }
+                else if (Model.Project.ProjectBrief == null && Model.Project.FilePath != null)
+                {
+                    <dt style="margin: 0px 15px; display: block; font-size: 16px; font-weight: 500; display: inline-block; width: 100%;">
+                        Add a brief or see the existing pdf file
+                    </dt>
+                }
+                else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
+                {
+                    <dt style="margin: 0px 15px; display: block; font-size: 16px; font-weight: 500; display: inline-block; width: 100%;">
+                        See or edit the brief or add a pdf file
+                    </dt>
+                }
+                else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
+                {
+                    <dt style="margin: 0px 15px; display: block; font-size: 16px; font-weight: 500; display: inline-block; width: 100%;">
+                        Edit brief or pdf file
+                    </dt>
+                }
+                <dd style="margin: 0px 15px 0px 15px;">
+                    @if (Model.Project.ProjectBrief == null)
+                    {
+                        <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Brief to Explain your Project |</a>
+                    }
+                    else
+                    {
+                        <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Edit Brief |</a>
+                    }
+                    @if (Model.Project.FilePath == null)
+                    {
+                        <a asp-action="AddFile" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">Add Files</a>
+                    }
+                    else
+                    {
+                        <p>You have added a file @Model.Project.FilePath</p>
+                        <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download |</a>
+                        <form asp-action="RemoveProjectFile" method="post" asp-route-id="@Model.Project.ProjectId">
+                            <button type="submit" name="button">Remove File</button>
+                        </form>
+                    }
+                </dd>
+            }
+            else
+            {
+                @if (Model.Project.ProjectBrief == null && Model.Project.FilePath != null)
+                {
+                    <dt class="col-sm-2">
+                        Download the pdf file
+                    </dt>
+                }
+                else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
+                {
+                    <dt class="col-sm-2">
+                        See the brief
+                    </dt>
+                }
+                else if (Model.Project.ProjectBrief != null && Model.Project.FilePath == null)
+                {
+                    <dt class="col-sm-2">
+                        See brief or download pdf file
+                    </dt>
+                }
+                <dd>
+                    @if (Model.Project.ProjectBrief != null)
+                    {
+                        <a asp-action="AddBrief" asp-controller="Projects" asp-route-id="@Model.Project.ProjectId">See Brief |</a>
+                    }
+                    @if (Model.Project.FilePath != null)
+                    {
+                        <a asp-action="DownloadFile" asp-route-id="@Model.Project.ProjectId" asp-route-filePath="@Model.Project.FilePath">Download</a>
+                    }
+                </dd>
+            }
+        </dl>
+        @if (Model.Project.ProjectBrief != null)
+        {
+            <div>
+                <h4>Projects Brief</h4>
+                <p>@Html.DisplayFor(model => model.Project.ProjectBrief)</p>
+            </div>
+        }
+        <hr />*@
+    <div class="col-auto m-t-60 p-l-0">
         <ul class="list-inline dis-flex justify-content-between">
-            <li class="list-inline-item">
-                @Html.ActionLink("Add user", "Create", "ProjectAccesses", new { id = Model.Project.ProjectId })
-            </li>
             <li class="list-inline-item">
                 <a asp-action="Index">Back to Projects List</a>
             </li>

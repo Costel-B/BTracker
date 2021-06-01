@@ -19,3 +19,241 @@
 {
     padding: 10px 20px;
 }
+
+/*PROJECT INDEX~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+#indexProjectLink {
+    margin: auto 0 auto 0;
+    margin-right: 10px;
+    border: 1px solid #150940;
+    padding: 2px 10px 2px 10px;
+    border-radius: 5px;
+    color: #150940;
+    background-color: white;
+}
+#indexProjectLink:hover {
+    background-color: #150940;
+    color: #fff;
+}
+#indexProjectButton {
+    margin: auto 0 auto 0;
+    margin-right: 10px;
+    border: 1px solid #150940;
+    padding: 2px 10px 2px 10px;
+    border-radius: 5px;
+    background-color: #150940;
+}
+#addBriefLink {
+    border: 1px solid #66C9FA;
+    padding: 7px 10px;
+    margin-right: 40px;
+    border-radius: 5px;
+    background-color: #66C9FA;
+    color: white;
+}
+#addBriefLink:hover {
+    background-color: #F0EFF3;
+    color: #66C9FA;
+}
+#addPathLink {
+    border: 1px solid #5B5B5B;
+    padding: 7px 10px;
+    border-radius: 5px;
+    background-color: #F0EFF3;
+    color: #5B5B5B;
+}
+#addPathLink:hover {
+    background-color: #5B5B5B;
+    color: #F0EFF3;
+}
+
+
+.title {
+    font-family: 'Patua One', cursive;
+    color: #150940;
+}
+
+.purple {
+    color: #150940;
+}
+
+.hr {
+    margin: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+/*Table Css ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+.limiter {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.wrap-table100 {
+    width: 100%;
+}
+
+.tableUsers, .detailsTicketTable {
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto 20px auto;
+    position: relative;
+}
+
+.tableUsers *, .detailsTicketTable * {
+    position: relative;
+}
+
+.tableUsers td, .detailsTicketTable td, table th {
+    padding-left: 8px;
+}
+
+.tableUsers thead tr, .detailsTicketTable thead tr {
+    height: 60px;
+    background: #150940;
+}
+
+.tableUsers tbody tr, .detailsTicketTable tbody tr {
+    height: 50px;
+}
+
+.tableUsers tbody tr:last-child, .detailsTicketTable tbody tr:last-child {
+    border: 0;
+}
+
+.tableUsers td, .detailsTicketTable td, table th {
+    text-align: left;
+}
+
+.tableUsers td.l, .detailsTicketTable td.l, table th.l {
+    text-align: right;
+}
+
+.tableUsers td.c, .detailsTicketTable td.c, table th.c {
+    text-align: center;
+}
+
+.tableUsers td.r, .detailsTicketTable td.r, table th.r {
+    text-align: center;
+}
+
+.table100-head th {
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    color: #fff;
+    line-height: 1.2;
+    font-weight: unset;
+}
+
+.tableUsers tbody tr:nth-child(even), .detailsTicketTable tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+.tableUsers tbody tr, .detailsTicketTable tbody tr {
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    color: #808080;
+    line-height: 1.2;
+    font-weight: unset;
+}
+
+.tableUsers tbody tr:hover, .detailsTicketTable tbody tr:hover {
+    color: #555555;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.column1 {
+    column-count: 6;
+    padding-left: 40px;
+}
+
+.column2 {
+    column-count: 4;
+}
+
+.column3 {
+    column-count: 2;
+    text-align: center;
+}
+
+@media screen and (max-width: 992px) {
+    .tableUsers, .detailsTicketTable {
+        display: block;
+    }
+
+    .tableUsers > *,
+    .tableUsers tr,
+    .tableUsers td,
+    .tableUsers th,
+    .detailsTicketTable > *,
+    .detailsTicketTable tr,
+    .detailsTicketTable td,
+    .detailsTicketTable th {
+        display: block;
+    }
+
+    .tableUsers thead,
+    .detailsTicketTable thead {
+        display: none;
+    }
+
+    .tableUsers tbody tr,
+    .detailsTicketTable tbody tr {
+        height: auto;
+        padding: 37px 0;
+    }
+
+    .tableUsers tbody tr td,
+    .detailsTicketTable tbody tr td {
+        padding-left: 40% !important;
+        margin-bottom: 24px;
+    }
+
+    .tableUsers tbody tr td:last-child,
+    .detailsTicketTable tbody tr td:last-child {
+        margin-bottom: 0;
+    }
+
+    .tableUsers tbody tr td:before,
+    .detailsTicketTable tbody tr td:before {
+        font-family: "Montserrat", sans-serif;
+        font-size: 14px;
+        color: #999999;
+        line-height: 1.2;
+        font-weight: unset;
+        position: absolute;
+        width: 40%;
+        left: 30px;
+        top: 0;
+    }
+
+    #tableUsers .tableUsers tbody tr td:nth-child(1):before {
+        content: "Users In Project";
+    }
+
+    #tableUsers .tableUsers tbody tr td:nth-child(2):before {
+        content: "Access Type";
+    }
+
+    #tableUsers .tableUsers tbody tr td:nth-child(3):before {
+        content: "";
+    }
+
+    .column1,
+    .column2,
+    .column3 {
+        width: 100%;
+    }
+
+    .tableUsers tbody tr,
+    .detailsTicketTable tbody tr {
+        font-size: 14px;
+    }
+}
+@media (max-width: 576px) {
+    .container-table100 {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

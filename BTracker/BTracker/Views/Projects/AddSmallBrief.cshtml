@@ -4,30 +4,42 @@
     ViewData["Title"] = "AddSmallBrief";
 }
 
-<h1>AddSmallBrief</h1>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100" style="width: auto;">
+            <section>
+                <form class="login100-form validate-form" id="account" method="post">
+                    <span class="login100-form-title p-b-26">
+                        Create a <b style="color: #150940">Small Brief</b> to breafly explain what will be made in this project
+                    </span>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>Project</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddSmallBrief">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ProjectId" />
-            <input type="hidden" asp-for="ProjectName" class="form-control" />
-            <div class="form-group">
-                <label class="control-label">What we will make</label>
-                <input asp-for="ProjectSmallBrief" class="form-control" />
-                <span asp-validation-for="ProjectSmallBrief" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="UserId" value="@ViewBag.currentUserId" readonly />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                    <input type="hidden" asp-for="ProjectId" />
+                    <input type="hidden" asp-for="ProjectName" />
+                    <input type="hidden" asp-for="ProjectBrief" value="@Model.ProjectBrief" />
+                    <input type="hidden" asp-for="FilePath" value="@Model.FilePath" />
+                    <input type="hidden" asp-for="UserId" value="@ViewBag.currentUserId" />
+
+                    <div class="wrap-input100 validate-input" style="border-bottom: 0px;">
+                        <textarea class="form-control" asp-for="ProjectSmallBrief" cols="40" rows="5"></textarea>
+                        <span class="txt1">120 characters max</span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <button class="login100-form-btn submitFormBtn" type="submit">
+                                Create Small Brief
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center p-t-25">
+                        <span class="txt1">
+                            @Html.ActionLink("Back to Details", "Details", "Projects", new { id = ViewBag.projectId })
+                        </span>
+                    </div>
+                </form>
+            </section>
+        </div>
     </div>
 </div>
-
-<div>
-    @Html.ActionLink("Back to Details", "Details", "Projects", new { id = ViewBag.projectId })
-</div>
-

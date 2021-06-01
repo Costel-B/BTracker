@@ -220,7 +220,7 @@ namespace BTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectSmallBrief,UserId")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectSmallBrief,ProjectBrief,FilePath,UserId")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -321,23 +321,6 @@ namespace BTracker.Controllers
                 _context.Projects.Update(project);
                 await _context.SaveChangesAsync();
 
-                // see what files every project has
-                // remove the files that have different urls
-                string[] files = Directory.GetFiles(Path.Combine(webHostEnvironment.WebRootPath, "images"));
-
-                var existingFiles = _context.Projects.Select(x => x.FilePath).ToList();
-
-                foreach (string file in files)
-                {
-                    foreach (string existingFile in existingFiles)
-                    {
-                        if (existingFile != file)
-                        {
-                            System.IO.File.Delete(file);
-                        };
-                    };
-                };
-
                 return RedirectToAction("Details", "Projects", new { id });
             }
 
@@ -373,7 +356,7 @@ namespace BTracker.Controllers
         // POST: Projects/AddSmallBrief/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddSmallBrief(int id, [Bind("ProjectId,ProjectName,ProjectSmallBrief,UserId")] Project project)
+        public async Task<IActionResult> AddSmallBrief(int id, [Bind("ProjectId,ProjectName,ProjectSmallBrief,ProjectBrief,FilePath,UserId")] Project project)
         {
             if (id != project.ProjectId)
             {
@@ -432,7 +415,7 @@ namespace BTracker.Controllers
         // POST: Projects/AddBrief/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddBrief(int id, [Bind("ProjectId,ProjectName,ProjectBrief,UserId")] Project project)
+        public async Task<IActionResult> AddBrief(int id, [Bind("ProjectId,ProjectName,ProjectSmallBrief,ProjectBrief,FilePath,UserId")] Project project)
         {
             if (id != project.ProjectId)
             {
@@ -469,11 +452,10 @@ namespace BTracker.Controllers
 
         // GET: Projects/Edit/5
         [Authorize(Policy = "AdminAccess")]
-        public async Task<IActionResult> Edit(int? id, string place)
+        public async Task<IActionResult> Edit(int? id)
         {
             ViewBag.currentUserId = _userManager.GetUserId(User);
             ViewBag.projectId = id;
-            ViewBag.place = place;
 
             if (id == null)
             {
@@ -494,7 +476,7 @@ namespace BTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,ProjectName,UserId")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,ProjectName,ProjectSmallBrief,ProjectBrief,FilePath,UserId")] Project project)
         {
             if (id != project.ProjectId)
             {
@@ -598,6 +580,105 @@ namespace BTracker.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(place, "Projects", new { id });
+        }
+
+        public async Task<IActionResult> RemoveAssignTicketUser(int? id, int? ticketId, string place)
+        {
+            if (id == null && ticketId == null)
+            {
+                return BadRequest();
+            }
+
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+
+            ticket.UserId = null;
+            _context.Tickets.Update(ticket);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(place, "Projects", new { id });
+        }
+
+        public async Task<IActionResult> RemoveTicketDate(int? id, int? ticketId, string place)
+        {
+            ViewBag.place = place;
+            if (id == null && ticketId == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+
+            ticket.Date = DateTime.MinValue;
+            _context.Tickets.Update(ticket);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(place, "Projects", new { id });
+        }
+
+        public async Task<IActionResult> RemoveSmallProjectBrief(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects.FindAsync(id);
+            project.ProjectSmallBrief = null;
+            _context.Projects.Update(project);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Projects", new { id });
+        }
+
+        public async Task<IActionResult> RemoveProjectBrief(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects.FindAsync(id);
+            project.ProjectBrief = null;
+            _context.Projects.Update(project);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Projects", new { id });
+        }
+
+        public async Task<IActionResult> RemoveProjectFile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var proejct = await _context.Projects.FindAsync(id);
+
+            // see what files this project has
+            // remove the files that have different urls
+
+            // todos os ficheiros que estão guardados
+            string[] files = Directory.GetFiles(Path.Combine(webHostEnvironment.WebRootPath, "images"));
+
+            // ficheiro do project
+            var projectFile = (from pFile in _context.Projects
+                              where pFile.ProjectId == id
+                              select pFile.FilePath).Single();
+
+            foreach (string file in files)
+            {
+                if (projectFile == file)
+                {
+                    System.IO.File.Delete(file);
+                };
+            };
+
+
+            proejct.FilePath = null;
+            _context.Projects.Update(proejct);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Projects", new { id });
         }
     }
 }
